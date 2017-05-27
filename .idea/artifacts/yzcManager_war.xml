@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yzcManager:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="yzcManager.war">
+      <element id="artifact" artifact-name="yzcManager:war exploded" />
+    </root>
+  </artifact>
+</component>

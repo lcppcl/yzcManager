@@ -1,0 +1,204 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>添加猪栏</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form_class_edit">
+		<input type="hidden" id="id" name="id">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所属猪舍：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1" name="cla_gra_id" id="cla_gra_id">
+						<option value="">请选择猪舍号</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>猪栏名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="cla_name" name="cla_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>面积：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="cla_eara" name="cla_eara">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>猪栏是否完好：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<!--<input type="text" class="input-text" value="" placeholder="" id="cla_is_intact" name="cla_is_intact">-->
+				<span class="select-box">
+					<select class="select" size="1" name="cla_is_intact" id="cla_is_intact">
+						<option value="完好">完好</option>
+						<option value="损坏">损坏</option>
+					</select>
+				</span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>饲养员：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1" name="cla_breeder" id="cla_breeder">
+						<option value="" >请选择饲养员</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">猪栏描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea id="cla_desc" name="cla_desc" cols="" rows="" class="textarea"  placeholder="描述" onKeyUp="textarealength(this,100)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" id="addFy" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<!-- <script type="text/javascript" src="../lib/Validform/jquery.form.js"></script> -->
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+    $(function(){
+        $(window).load(function(){
+            init();
+            updateInfo();
+        });
+
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form_class_edit").validate({
+            rules:{
+                cla_gra_id:{
+                    required:true,
+                },
+                cla_name:{
+                    required:true,
+                },
+                cla_name:{
+                    required:true,
+                },
+                cla_eara:{
+                    required:true,
+                },
+                cla_breeder:{
+                    required:true,
+                },
+                cla_is_intact:{
+                    required:true,
+                },
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var formData = $(form).serializeArray();
+                $.post("/pig_manage/class/insertOrUpdate.do",formData,function(data){
+                    if(data === true){
+                        layer.alert("修改成功！",function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('.btn-refresh').click();
+                            parent.layer.close(index);
+                        })
+                    }else {
+                        layer.msg('修改失败!',{icon:1,time:1000});
+                    }
+                },"json");
+            }
+        });
+    });
+
+
+    //获取请求参数，name: 请求中参数的名字，返回参数的值
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    //初始化方法
+    function init(){
+
+        //加载猪舍
+        $.post("/pig_manage/grade/getGradeList.do", function(data) {
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.gra_id+">"+v.gra_name+"</option>";
+                $("#cla_gra_id").append(content);
+            });
+        },"json");
+
+        //加载员工
+        $.post("/staffing/employee/getEmployeeList.do", {deptId:1} , function(data) {
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.emp_id+">"+v.emp_name+"</option>";
+                $("#cla_breeder").append(content);
+            });
+        },"json");
+    }
+    //填充数据
+    function updateInfo() {
+        var id = getQueryString("id");
+        $.post("/pig_manage/class/getClassInfo.do",{"id":id},function(data){
+            $("#id").val(data.id);
+            $("#cla_gra_id > option[value="+data.gra_id+"]").attr("selected", true);
+            $("#cla_name").val(data.cla_name);
+            $("#cla_eara").val(data.cla_eara);
+            $("#cla_is_intact > option[value="+data.cla_is_intact+"]").attr("selected", true);
+            $("#cla_breeder > option[value="+data.emp_id+"]").attr("selected", true);
+            $("#cla_desc").val(data.cla_desc);
+        },"json");
+    }
+</script>
+</body>
+</html>

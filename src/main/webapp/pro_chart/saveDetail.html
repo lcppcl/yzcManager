@@ -1,0 +1,169 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>生产报表</title>
+</head>
+<body class="pos-r">
+<div style="margin-left:5px;">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 生产报表 <span class="c-gray en">&gt;</span> 存栏明细 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<div class="text-c"> 
+			<input type="text" name="" id="earnum" placeholder=" 耳号" style="width:250px" class="input-text">
+			<input type="text" name="" id="gname" placeholder=" 猪舍" style="width:250px" class="input-text">
+			<button name="" class="btn btn-success" onclick="getPigstyInfo()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+			<!-- <button name="" id="" class="btn btn-success" onClick ="$('#table').tableExport({type: 'excel', escape: 'false'})"><i class="Hui-iconfont">&#xe644;</i> 导出</button> -->
+			<button name="" class="btn btn-success" onClick ="tableExport('table')"><i class="Hui-iconfont">&#xe644;</i> 导出</button>
+			<button name="" id="print" class="btn btn-success" onClick="print()"><i class="Hui-iconfont">&#xe652;</i> 打印</button>
+            <!-- <button class="btn btn-success" onClick ="$('#table').tableExport({type: 'pdf', escape: 'false'});">CSV Export</button> -->  
+		</div>
+		<div class="mt-20">
+			<table id="table" class="table table-border table-bordered table-bg table-hover ">	
+			<!--  
+			<thead>
+			<tr><th class="text-c" colspan="14">存栏明细</th></tr>
+			<tr class="text-c">
+				<th width="40">耳号</th>
+				<th width="40">舍号</th>
+				<th width="40">栏位</th>
+				<th width="40">重量</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		-->
+			</table>
+				<div class="foot">
+				 <a href="javascript:void(0)" id="before" class="pages" >上一页</a> 
+				 <a id="recordall" class="word">0 条记录</a> <a id="pagecount" class="word"> 0/0页</a>
+				 <a href="javascript:void(0)" id="after" class="pages" >下一页</a>&nbsp; &nbsp;
+				</div>
+			</div>
+	</div>
+</div>
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript"  src="../lib/datatables/1.10.0/jquery.dataTables.min.js" ></script> 
+<script type="text/javascript" src="../lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+  <script type="text/javascript" src="../js/jQuery.print.js"></script> 
+<script type="text/javascript" src="../js/leadout.js"></script> 
+
+<script type="text/javascript">
+function print(){
+	$.print("#table");
+}
+	
+
+$(function (){
+	 $.post("../save.do",{"v":"query"},function(data){
+		 $("#recordall").html(data.recordall+"条记录");
+			$("#pagecount").html(data.page+"/"+data.pageCount+"页");
+			$("#before").attr("href", "javascript:pagination("+(data.page-1)+");");
+			$("#after").attr("href", "javascript:pagination("+(parseInt(data.page)+1)+");");
+	 		var html="<thead><tr class='text-c'>"
+			html +="<th width=\"200\">耳号</th>"
+			html +="<th width=\"200\">舍号</th>"
+			html +="<th width=\"200\">栏位</th>"
+			html +="<th width=\"200\">重量</th>"
+			html +="</tr></thead>";
+	 $.each(data.list,function(i,v) {   
+		  html +='<tbody><tr class="text-c va-m"><td>'+v.pig_ear_num+'</td>';
+		  html +='<td>'+v.gra_name+'</td>';
+		  html +='<td>'+v.cla_name+'</td>';
+		  html +='<td>'+v.pig_dn_weight+'</td></tr></tbody>';
+		  
+    });  
+	 $("#table").html(html)
+	
+},"json");
+})
+
+
+
+
+	//查询
+	function getPigstyInfo(){
+	var earnum = $("#earnum").val();
+	var gname = $("#gname").val();
+	
+			$(".foot").hide();
+			 $.post("../save.do",{"v":"getPigstyInfo","earnum":earnum,"gname":gname},function(data){
+					if(data==null||data==""){
+						alert("输入有误，请重新输入！")
+						$("#earnum").val("").focus();
+						$("#gname").val("");
+					}else{
+						var html="<thead><tr class='text-c'>"
+							html +="<th width=\"40\">耳号</th>"
+							html +="<th width=\"40\">舍号</th>"
+							html +="<th width=\"40\">栏位</th>"
+							html +="<th width=\"40\">重量</th>"
+							html +="</tr></thead>"; 
+							$(data).each(function(i,v) {
+						  		html +='<tbody><tr class="text-c va-m"><td>'+v.pig_ear_num+'</td>';
+						  		html +='<td>'+v.gra_name+'</td>';
+						  		html +='<td>'+v.cla_name+'</td>';
+						  		html +='<td>'+v.pig_dn_weight+'</td></tr></tbody>';
+							});
+					 		$("#table").html(html)	
+					}
+			 		
+			},"json");
+		
+		
+	} 
+	
+
+	
+	//分页
+	function  pagination(obj){
+		 $.post("../save.do",{"v":"query","page":obj},function(data){
+			 $("#recordall").html(data.recordall+"条记录");
+				$("#pagecount").html(data.page+"/"+data.pageCount+"页");
+				$("#before").attr("href", "javascript:pagination("+(data.page-1)+");");
+				$("#after").attr("href", "javascript:pagination("+(parseInt(data.page)+1)+");");
+		 		var html="<thead><tr class='text-c'>"
+				html +="<th width=\"40\">耳号</th>"
+				html +="<th width=\"40\">舍号</th>"
+				html +="<th width=\"40\">栏位</th>"
+				html +="<th width=\"40\">重量</th>"
+				html +="</tr></thead>";
+		 $.each(data.list,function(i,v) {   
+			  html +='<tbody><tr class="text-c va-m"><td>'+v.pig_ear_num+'</td>';
+			  html +='<td>'+v.gra_name+'</td>';
+			  html +='<td>'+v.cla_name+'</td>';
+			  html +='<td>'+v.pig_dn_weight+'</td></tr></tbody>';
+         });  
+		 $("#table").html(html)
+		
+		},"json");
+	}
+</script>
+<script type="text/javascript" language="javascript">
+        
+    </script>
+
+</body>
+</html>

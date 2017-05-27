@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.product_manage.BreedManageDao">
+
+    <select id="getPageList" resultType="map">
+        SELECT b.bre_id,bre_time,m.pig_ear_num  m_ear_num,m.pig_source m_source,m.pig_level m_level,
+            f.pig_ear_num f_ear_num,f.pig_source f_source,f.pig_level f_level
+        FROM yzc_breed_record b
+        LEFT JOIN yzc_pig m ON m.pig_id=b.bre_mo_ear
+        LEFT JOIN yzc_pig f ON f.pig_id=b.bre_fa_ear
+        <where>
+            <if test="mo_ear_num != null and mo_ear_num != ''">
+                AND m.pig_ear_num = #{mo_ear_num}
+            </if>
+            <if test="fu_ear_num != null and fu_ear_num != ''">
+                AND f.pig_ear_num = #{fu_ear_num}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBreedEarNum" resultType="map">
+        SELECT b.bre_id,m.pig_ear_num  m_ear_num,f.pig_ear_num f_ear_num,b.bre_time
+        FROM yzc_breed_record b
+        LEFT JOIN yzc_pig m ON m.pig_id=b.bre_mo_ear
+        LEFT JOIN yzc_pig f ON f.pig_id=b.bre_fa_ear
+    </select>
+
+    <select id="getBreedById" resultType="map">
+        SELECT b.bre_id,bre_time,m.pig_ear_num  m_ear_num,m.pig_source m_source,m.pig_level m_level,
+            f.pig_ear_num f_ear_num,f.pig_source f_source,f.pig_level f_level
+        FROM yzc_breed_record b
+        LEFT JOIN yzc_pig m ON m.pig_id=b.bre_mo_ear
+        LEFT JOIN yzc_pig f ON f.pig_id=b.bre_fa_ear
+        WHERE b.bre_id = #{bre_id}
+    </select>
+
+</mapper>

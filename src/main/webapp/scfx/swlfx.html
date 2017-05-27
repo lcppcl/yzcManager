@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<title>死亡率分析</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 生产分析 <span class="c-gray en">&gt;</span> 死亡率分析 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c">
+		<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM',isShowClear:false,readOnly:true})" id="date" class="input-text Wdate" style="width:100px;">
+		<button type="submit" class="btn btn-primary radius" id="query" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+	</div>
+</div>
+<br>
+<div id="main" style="height:400px;width:90%;margin:0 auto;"></div>
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script src="../lib/echars/dist/echarts-all.js"></script>
+<script type="text/javascript">
+//基于准备好的dom，初始化echarts图表
+$("#query").click(function() {
+	getSwl();
+});
+
+getSwl();
+
+function getSwl(){
+	$.post("/product_analysis/getMortalityByDate.do", {date : $("#date").val()},function(data) {
+        var obj = eval('(' + data + ')');
+        var option = {
+            title : {
+                text : '死亡率分析',
+                x : 'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : '40px',
+                //data:['后备期','妊娠前期','妊娠中期','妊娠后期','产前7天','哺乳期','空怀期','种公猪','保育猪','小猪期','中猪期','大猪期']
+                data:(function(){
+                    var res = [];
+                    for (var i = 0; i < obj.length; i++) {
+                        var info = obj[i];
+                        res.push(info.name);
+                    }
+                    return res;
+                })()
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [ {
+                name : '死亡数据',
+                type : 'pie',
+                radius : '55%',
+                center : [ '50%', '60%' ],
+                //data : [{value:8, name:'后被期'}]
+                data:(function(){
+                    var res = [];
+                    for (var i = 0; i < obj.length; i++) {
+                        var info = obj[i];
+                        res.push({name:info.name,value:info.value});
+                    }
+                    return res;
+                })()
+            }]
+        };
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.hideLoading();
+        myChart.setOption(option);
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.pig_manage.DiseaseDao">
+
+    <select id="getIllPage" resultType="map">
+        SELECT  i.ill_id,i.ill_name,p.pig_ear_num,i.ill_time,i.ill_med_list,e.emp_name,i.ill_desc
+        FROM yzc_ill_record i
+        LEFT JOIN yzc_pig p ON p.pig_id=i.ill_id
+        LEFT JOIN yzc_employee e ON e.emp_id=i.ill_doctor
+        <where>
+            <if test="ill_name != null and ill_name != ''">
+                ( i.ill_name LIKE CONCAT('%',#{ill_name},'%')
+                OR i.ill_med_list LIKE CONCAT('%',#{ill_name},'%') )
+            </if>
+            <if test="ear_num != null and ear_num != ''">
+                AND p.pig_ear_num LIKE CONCAT('%',#{ear_num},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getIllById" resultType="map">
+        SELECT  i.ill_id,i.ill_name,p.pig_ear_num,i.ill_time,i.ill_med_list,e.emp_name,i.ill_desc
+        FROM yzc_ill_record i
+        LEFT JOIN yzc_pig p ON p.pig_id=i.ill_id
+        LEFT JOIN yzc_employee e ON e.emp_id=i.ill_doctor
+        WHERE i.ill_id = #{id}
+    </select>
+
+</mapper>

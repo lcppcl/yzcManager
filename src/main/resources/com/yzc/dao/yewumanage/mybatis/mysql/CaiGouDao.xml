@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.yewumanage.CaiGouDao">
+
+    <select id="queryPurByName" resultType="map">
+        SELECT pur_id,pur_name,pur_price,pur_count,pur_total,order_date,pa.par_name,e.emp_name
+        FROM yzc_purchase_record p
+        LEFT JOIN yzc_orders o ON o.uuid = p.order_uuid
+        LEFT JOIN yzc_partner pa ON o.order_sup = pa.par_id
+        LEFT JOIN yzc_employee e ON o.order_emp = e.emp_id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                AND o.order_date &gt; #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND o.order_date &lt; #{endDate}
+            </if>
+            <if test="content != null and content != ''">
+                AND ( pur_name LIKE CONCAT('%',#{content},'%')
+                    OR pa.par_name LIKE CONCAT('%',#{content},'%')
+                    OR e.emp_name LIKE CONCAT('%',#{content},'%')
+                  )
+            </if>
+        </where>
+    </select>
+
+    <select id="getPurInfoById" resultType="map">
+        SELECT pur_id,pur_name,pur_price,pur_count,pur_total,order_date,pa.par_name,e.emp_name
+        FROM yzc_purchase_record p
+        LEFT JOIN yzc_orders o ON o.uuid = p.order_uuid
+        LEFT JOIN yzc_partner pa ON o.order_sup = pa.par_id
+        LEFT JOIN yzc_employee e ON o.order_emp = e.emp_id
+        WHERE pur_id = #{pur_id}
+    </select>
+
+</mapper>

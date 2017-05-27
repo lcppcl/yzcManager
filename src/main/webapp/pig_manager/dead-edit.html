@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<title>修改死亡记录</title>
+</head>
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-dead-edit">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>死亡耳号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" id="deadId" name="deadId" style="display:none;">
+				<input type="text" class="input-text" value="" id="dead_earNo" name="dead_earNo" disabled="disabled">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>死亡时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})" id="deaDate" name="deaDate" class="input-text Wdate" style="width:120px;">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>死亡记录人员：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1"  id="deaPeo" name="deaPeo">
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>死亡原因：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="deaRes" id="deaRes" cols="" rows="" class="textarea"  placeholder="死亡原因...最少输入10个字符" onKeyUp="textarealength(this,100)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" id="updateVar" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<script type="text/javascript" src="../MyJs/date_string.js"></script>
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+
+<script type="text/javascript">
+$(function(){
+	$("#form-dead-edit").validate({
+		rules:{
+			deaDate:{
+				required:true,
+				dateISO:true
+			},
+			deaRes:{
+				required:true
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var datas = $(form).serializeArray();
+			$.post("../dead.do",{"v":"updateDead","data":datas},function(num){
+				if(num > 0){
+					alert("死亡记录修改成功");
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.$('.btn-refresh').click();
+					parent.layer.close(index); 
+				}else{
+					alert("死亡记录修改失败");
+				}
+			},"text");
+		}, 	
+	});
+	
+	//获取请求参数，name: 请求中参数的名字，返回参数的值
+	function getQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]); return null;
+	}
+	$.post("../dead.do",{"v":"getDeadById","id":getQueryString("id")},function(data){
+		$.each(data,function(i,v){
+			$("#deadId").val(v.dea_id);
+			$("#dead_earNo").val(v.pig_ear_num);
+			$("#deaDate").val(jsonDate_str(v.dea_time));
+			var $optionPeo = "<option value="+v.emp_id+" selected>"+v.emp_name+"</option>";
+			getAllEmpName();
+			$("#deaPeo").append($optionPeo);
+			$("#deaRes").val(v.dea_reason);
+		});
+	},"json");
+	
+	function getAllEmpName(){
+		$.post("../dead.do",{"v":"getAllEmpName"},function(data){
+			$.each(data,function(i,v){
+				var $optionPeo = "<option value="+v.emp_id+">"+v.emp_name+"</option>";
+				$("#deaPeo").append($optionPeo);
+			});
+		},"json");
+	}
+	
+	function getAllPigEar(){
+		$.post("../dead.do",{"v":"getAllPigEar"},function(data){
+			$.each(data,function(i,v){
+				var $optionPig = "<option value="+v.pig_id+">"+v.pig_ear_num+"</option>";
+				$("#dead_earNo").append($optionPig);
+			});
+		},"json");
+	}
+
+});
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

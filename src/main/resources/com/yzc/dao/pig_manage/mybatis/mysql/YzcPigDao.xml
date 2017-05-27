@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.pig_manage.YzcPigDao">
+
+    <select id="getPigListByParams" resultType="map" >
+        <if test="pig_sex == '公猪'">
+            SELECT a.pig_id ,a.pig_ear_num,IFNULL(a.fa_ear,'无') fa_ear, IFNULL(b.pig_ear_num,'无') mo_ear,a.pig_birth,a.pig_weight,a.pig_dn_weight,a.pig_enter_time ,a.var_name,c.cla_name,
+            a.pig_level,a.pig_out_time,a.pig_desc ,e.emp_name ,gg.gra_name ,a.pig_source,a.pig_step_id
+            FROM(SELECT p.pig_id ,p.pig_ear_num,g.pig_ear_num fa_ear,p.pig_mo_ear,p.pig_birth,p.pig_weight,p.pig_dn_weight,p.pig_enter_time ,var_name ,
+            p.pig_class,p.pig_level,p.pig_out_time,p.pig_desc ,p.pig_is_dead ,p.pig_sex ,p.pig_source,p.pig_step_id
+            FROM (yzc_pig p LEFT JOIN yzc_pig g ON p.pig_fa_ear=g.pig_id)
+            LEFT JOIN yzc_variety v ON v.var_id=p.pig_type_id
+            <if test="var_id != null and var_id != 0">
+                WHERE v.var_id = #{var_id}
+            </if>
+            ) a
+            LEFT JOIN yzc_pig b ON a.pig_mo_ear=b.pig_id
+            LEFT JOIN yzc_class c ON c.id=a.pig_class
+            LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+            LEFT JOIN yzc_grade gg ON c.cla_gra_id=gg.gra_id
+            <where>
+                a.pig_is_dead=1 AND a.pig_sex = '公猪'
+                <if test="startDate != null and startDate != ''">
+                    AND a.pig_enter_time &gt; #{startDate}
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    AND a.pig_enter_time &lt; #{endDate}
+                </if>
+                <if test="ear_num != null and ear_num != ''">
+                    AND a.pig_ear_num LIKE CONCAT('%',#{ear_num},'%')
+                </if>
+            </where>
+        </if>
+        <if test="pig_sex == '母猪'">
+            SELECT a.pig_id,a.pig_ear_num,IFNULL(a.fa_ear,'无') fa_ear,IFNULL(b.pig_ear_num,'无') mo_ear,a.pig_birth,a.pig_weight,
+            a.pig_dn_weight,a.pig_enter_time ,a.var_name,c.cla_name,
+            a.pig_level,a.pig_out_time,a.pig_desc ,e.emp_name,s.step_name,IFNULL(ps.scount,0) scount,IFNULL(ps.ptime,0) ptime,
+            a.pig_letf_nipples,a.pig_right_nipples ,a.pig_source ,gg.gra_name,a.pig_step_id
+            FROM(SELECT p.pig_id,p.pig_ear_num,g.pig_ear_num
+                fa_ear,p.pig_mo_ear,p.pig_birth,p.pig_weight,p.pig_dn_weight,p.pig_enter_time ,var_name ,
+                p.pig_class,p.pig_level,p.pig_out_time,p.pig_desc ,p.pig_is_dead
+                ,p.pig_sex,p.pig_step_id,p.pig_letf_nipples,p.pig_right_nipples,
+                p.pig_source
+                FROM yzc_pig p
+                LEFT JOIN yzc_pig g ON p.pig_fa_ear=g.pig_id
+                LEFT JOIN yzc_variety v ON v.var_id=p.pig_type_id
+                <if test="var_id != null and var_id != 0">
+                    WHERE v.var_id = #{var_id}
+                </if>
+                ) a
+            LEFT JOIN yzc_pig b ON a.pig_mo_ear=b.pig_id
+            LEFT JOIN yzc_class c ON c.id=a.pig_class
+            LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+            LEFT JOIN yzc_step s ON s.id=a.pig_step_id
+            LEFT JOIN pro_sowinfo ps ON ps.pig_ear_num=a.pig_ear_num
+            LEFT JOIN yzc_grade gg ON c.cla_gra_id=gg.gra_id
+            <where>
+                a.pig_is_dead=1 AND a.pig_sex = '母猪'
+                <if test="startDate != null and startDate != ''">
+                    AND a.pig_enter_time &gt; #{startDate}
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    AND a.pig_enter_time &lt; #{endDate}
+                </if>
+                <if test="ear_num != null and ear_num != ''">
+                    AND a.pig_ear_num LIKE CONCAT('%',#{ear_num},'%')
+                </if>
+            </where>
+        </if>
+    </select>
+
+    <select id="getSeedPigList" resultType="map">
+        SELECT a.pig_id,a.pig_ear_num,IFNULL(a.fa_ear,'无') fa_ear,IFNULL(b.pig_ear_num,'无') mo_ear,a.pig_birth,a.pig_weight,a.pig_dn_weight,a.pig_enter_time ,a.var_name,c.cla_name,
+            a.pig_level,a.pig_out_time,a.pig_desc ,e.emp_name,s.step_name,ps.scount,ps.ptime,a.pig_letf_nipples,a.pig_right_nipples,a.pig_source
+            ,a.pig_sex,gg.gra_name
+        FROM(SELECT p.pig_ear_num,g.pig_ear_num fa_ear,p.pig_mo_ear,p.pig_birth,p.pig_weight,p.pig_dn_weight,p.pig_enter_time ,var_name ,
+            p.pig_class,p.pig_level,p.pig_out_time,p.pig_desc ,p.pig_is_dead ,p.pig_sex,p.pig_step_id,p.pig_letf_nipples,p.pig_right_nipples,
+            p.pig_source ,p.pig_id
+            FROM (yzc_pig p LEFT JOIN yzc_pig g ON p.pig_fa_ear=g.pig_id)
+            LEFT JOIN yzc_variety v ON v.var_id=p.pig_type_id) a
+        LEFT JOIN yzc_pig b ON a.pig_mo_ear=b.pig_id
+        LEFT JOIN yzc_class c ON c.id=a.pig_class
+        LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+        LEFT JOIN yzc_step s ON s.id=a.pig_step_id
+        LEFT JOIN pro_sowinfo ps ON ps.pig_ear_num=a.pig_ear_num
+        LEFT JOIN yzc_grade gg ON c.cla_gra_id=gg.gra_id
+        WHERE a.pig_is_dead=1 AND a.pig_step_id=1
+    </select>
+
+    <select id="getPigById" resultType="map">
+        <if test="pig_sex == '公猪'">
+            SELECT p.*,IFNULL(g.pig_ear_num,'无') fa_ear,IFNULL(b.pig_ear_num,'无') mo_ear,c.id cla_id,c.cla_name,e.emp_name ,gg.gra_name,v.var_id,v.var_name
+            FROM yzc_pig p
+            LEFT JOIN yzc_pig g ON p.pig_fa_ear=g.pig_id
+            LEFT JOIN yzc_variety v ON v.var_id=p.pig_type_id
+            LEFT JOIN yzc_pig b ON p.pig_mo_ear=b.pig_id
+            LEFT JOIN yzc_class c ON c.id=p.pig_class
+            LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+            LEFT JOIN yzc_grade gg ON c.cla_gra_id=gg.gra_id
+            WHERE p.pig_id = #{pig_id}
+        </if>
+        <if test="pig_sex == '母猪'">
+            SELECT p.*,IFNULL(g.pig_ear_num,'无') fa_ear,IFNULL(b.pig_ear_num,'无') mo_ear,c.id cla_id,c.cla_name,
+            e.emp_name,s.step_name,IFNULL(ps.scount,0) scount,IFNULL(ps.ptime,0) ptime,gg.gra_name,v.var_id,v.var_name
+            FROM yzc_pig p
+            LEFT JOIN yzc_pig g ON p.pig_fa_ear=g.pig_id
+            LEFT JOIN yzc_variety v ON v.var_id=p.pig_type_id
+            LEFT JOIN yzc_pig b ON p.pig_mo_ear=b.pig_id
+            LEFT JOIN yzc_class c ON c.id=p.pig_class
+            LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+            LEFT JOIN yzc_step s ON s.id=p.pig_step_id
+            LEFT JOIN pro_sowinfo ps ON ps.pig_ear_num=p.pig_ear_num
+            LEFT JOIN yzc_grade gg ON c.cla_gra_id=gg.gra_id
+            WHERE p.pig_id = #{pig_id}
+        </if>
+    </select>
+
+</mapper>

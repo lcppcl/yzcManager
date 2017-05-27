@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.staffing.EmployeeDao">
+
+
+    <select id="getEmployeeList" resultType="map">
+        SELECT *
+        FROM yzc_employee e
+        LEFT JOIN yzc_department d ON e.emp_dept_id = d.dept_id
+        <where>
+            e.emp_account != 'admin'
+            <if test="dept_id != null and dept_id != 0">
+                AND
+                (
+                    d.dept_id = #{dept_id}
+                    OR d.dept_pare_id = #{dept_id}
+                )
+            </if>
+            <if test="content != null and content != ''">
+                AND
+                (
+                    emp_account LIKE CONCAT('%',#{content},'%')
+                    OR emp_name LIKE CONCAT('%',#{content},'%')
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="getEmployeeById" resultType="map">
+        SELECT *
+        FROM yzc_employee e
+        LEFT JOIN yzc_department d ON e.emp_dept_id = d.dept_id
+        WHERE e.emp_id = #{emp_id}
+    </select>
+</mapper>

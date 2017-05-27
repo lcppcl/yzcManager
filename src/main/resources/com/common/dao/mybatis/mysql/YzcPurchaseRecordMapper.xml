@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcPurchaseRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcPurchaseRecord">
+		<id column="pur_id" property="pur_id" />
+		<result column="pur_name" property="pur_name" />
+		<result column="pur_price" property="pur_price" />
+		<result column="pur_count" property="pur_count" />
+		<result column="pur_unit" property="pur_unit" />
+		<result column="pur_total" property="pur_total" />
+		<result column="order_uuid" property="order_uuid" />
+	</resultMap>
+
+</mapper>

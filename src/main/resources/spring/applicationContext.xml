@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 采用注释的方式配置bean -->
+    <context:annotation-config />
+
+	<!-- 开启aop -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+    
+    <!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入 -->
+    <!--<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>-->
+
+	<!--扫描bean-->
+	<context:component-scan base-package="com.yzc"></context:component-scan>
+
+	<!-- 引入数据库连接配置属性文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${mysql.driverclass}"/>
+        <property name="url" value="${mysql.jdbcurl}"/>
+        <property name="username" value="${mysql.user}"/>
+        <property name="password" value="${mysql.password}"/>
+        <property name="maxActive" value="${mysql.maxActive}"></property>
+        <property name="maxIdle" value="${mysql.maxIdle}"></property>
+        <property name="maxWait" value="${mysql.maxWait}"></property>
+	</bean>
+
+	<!-- dataSourceproxy 配置代理管理事务 -->
+	<bean id="transactionDataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+		<property name="targetDataSource" ref="dataSource"/>
+	</bean>
+
+	<!-- sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+		<!-- 加载mybatis配置文件 -->
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+		<!-- 加载数据源 -->
+		<property name="dataSource" ref="transactionDataSourceProxy"></property>
+		<!-- 实体 -->
+		<!--<property name="typeAliasesPackage" value="com.common.entity" />-->
+		<!-- mapper.xml -->
+		<property name="mapperLocations">
+			<list>
+				<value>classpath*:com/common/dao/mybatis/mysql/*Mapper.xml</value>
+				<value>classpath*:com/yzc/dao/**/mybatis/mysql/*Dao.xml</value>
+			</list>
+		</property>
+		<!-- 插件配置 -->
+		<property name="plugins">
+			<array>
+				<!-- 分页插件配置 -->
+				<bean id="paginationInterceptor"
+					  class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+					<property name="dialectType" value="mysql" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<!--daopper.xml 的接口 配置文件 -->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.**.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+
+	<!--&lt;!&ndash; mapper接口扫描 &ndash;&gt;-->
+	<!--<bean class="org.mybatis.sprdaopper.MapperScannerConfigurer">-->
+		<!--<property name="basePackage" value="comdaopper"></property>-->
+		<!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>-->
+	<!--</bean>-->
+
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		  p:dataSource-ref="dataSource" />
+
+	<!-- 通知 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 传播行为 -->
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 创建事务的声明 -->
+	<!-- 利用AOP来告知事务管理哪个类 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.yzc.service.*.*(..))" id="serviceMethod"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
+	</aop:config>
+
+</beans>

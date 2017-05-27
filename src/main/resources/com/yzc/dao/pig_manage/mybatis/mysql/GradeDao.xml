@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.pig_manage.GradeDao">
+
+    <select id="getGradeList" resultType="map">
+        SELECT son.*
+        FROM (
+            SELECT e.emp_name,g.gra_id,g.gra_name,COUNT(c.id) ccount,g.gra_build_time,ccc.ppcount,g.gra_desc
+            FROM yzc_grade g
+            LEFT JOIN yzc_employee e ON e.emp_id=g.gra_admin
+            LEFT JOIN yzc_class c ON g.gra_id = c.cla_gra_id
+            LEFT JOIN (SELECT cc.cla_gra_id,SUM(cc.pcount) ppcount
+            FROM (SELECT c.cla_gra_id ,c.id ,COUNT(p.pig_id) pcount
+            FROM yzc_class c LEFT JOIN yzc_pig p ON c.id = p.pig_class
+            GROUP BY c.id) cc
+            GROUP BY cc.cla_gra_id) ccc ON ccc.cla_gra_id=g.gra_id
+            <where>
+                <if test="emp_name != null and emp_name != ''">
+                    AND e.emp_name LIKE CONCAT('%',#{emp_name},'%')
+                </if>
+                <if test="gra_name != null and gra_name != ''">
+                    AND g.gra_name LIKE CONCAT('%',#{gra_name},'%')
+                </if>
+            </where>
+            GROUP BY g.gra_id
+        ) son
+    </select>
+
+    <select id="getGradeInfo" resultType="map">
+        SELECT e.emp_id,e.emp_name,g.gra_id,g.gra_name,COUNT(c.id) ccount,g.gra_build_time,ccc.ppcount,g.gra_build_time,g.gra_desc
+        FROM yzc_grade g
+        LEFT JOIN yzc_employee e ON e.emp_id=g.gra_admin
+        LEFT JOIN yzc_class c ON g.gra_id = c.cla_gra_id
+        LEFT JOIN (SELECT cc.cla_gra_id,SUM(cc.pcount) ppcount
+                FROM (SELECT c.cla_gra_id ,c.id ,COUNT(p.pig_id) pcount
+                    FROM yzc_class c LEFT JOIN yzc_pig p ON c.id = p.pig_class
+                    GROUP BY c.id) cc
+                GROUP BY cc.cla_gra_id) ccc ON ccc.cla_gra_id=g.gra_id
+        WHERE g.gra_id = #{gra_id}
+    </select>
+
+</mapper>

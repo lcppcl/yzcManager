@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.staffing.DepartmentDao">
+
+    <select id="getDepartmentListByPage" resultType="map">
+        SELECT a.*,IFNULL(b.dept_name,'无') f_dept_name
+        FROM yzc_department a
+        LEFT JOIN yzc_department b ON a.dept_pare_id = b.dept_id
+        WHERE a.dept_state = 1
+    </select>
+
+</mapper>

@@ -1,0 +1,442 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>修改公猪</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>耳号：</label>
+			<div class="formControls col-xs-8 col-sm-9" id="ear_div">
+				<input type="text" class="input-text" value="" readonly="readonly" placeholder="" id="ear_num" name="ear_num">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>公母：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="sex" value="公猪" type="radio" id="sex-1" checked>
+					<label for="sex-1">公猪</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="母猪" id="sex-2" name="sex" disabled="disabled">
+					<label for="sex-2">母猪</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>猪栏：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="pig_class" id="class_select">
+					<option value="1">北京</option>
+					<option value="2">上海</option>
+					<option value="3">广州</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">父耳号：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="fa_ear" id="fa_ear">
+					<option value="1">北京</option>
+					<option value="2">上海</option>
+					<option value="3">广州</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">母耳号：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="mo_ear" id="mo_ear">
+					<option value="1">北京</option>
+					<option value="2">上海</option>
+					<option value="3">广州</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>来源：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="pig_source" value="自繁" type="radio" id="source_1" checked>
+					<label for="source_1">自繁</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="购入" id="source_2" name="pig_source">
+					<label for="source_2">购入</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>出生日期：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,readOnly:true})" id="birth" name="birth" class="input-text Wdate" style="width:120px;">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>当前重量：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="斤" name="pig_weight" id="pig_weight">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>断奶重量：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="斤" name="pig_dn_weight" id="pig_dn_weight">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>进场时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,readOnly:true})" id="enter_time" name="enter_time" class="input-text Wdate" style="width:120px;">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>星级评定：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="level" value="1" type="radio" id="level-1" checked>
+					<label for="level-1">一星</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="2" id="level_2" name="level">
+					<label for="level_2">二星</label>
+				</div>
+				<div class="radio-box">
+					<input name="level" value="3" type="radio" id="level_3" >
+					<label for="level_3">三星</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="4" id="level_4" name="level">
+					<label for="level_4">四星</label>
+				</div>
+				<div class="radio-box">
+					<input name="level" value="5" type="radio" id="level_5" >
+					<label for="level_5">五星</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>左奶头数：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="个" name="left_nipples" id="left_nipples">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>右奶头数：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="个" name="right_nipples" id="right_nipples">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否阉割：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="is_spay" value="1" type="radio" id="is_spay_1" checked>
+					<label for="is_spay_1">是</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="0" id="is_spay_2" name="is_spay">
+					<label for="is_spay_2">否</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>健康状态：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="health" value="健康" type="radio" id="health_1" checked>
+					<label for="health_1">健康</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="亚健康" id="health_2" name="health">
+					<label for="health_2">亚健康</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="生病" id="health_3" name="health">
+					<label for="health_3">生病</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">品种：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="type_select" id="type_select">
+					<option value="1">北京</option>
+					<option value="2">上海</option>
+					<option value="3">广州</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">阶段：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select class="select" size="1" name="level_select" id="level_select">
+					<option value="1">北京</option>
+					<option value="2">上海</option>
+					<option value="3">广州</option>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="beizhu" id="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么..." ></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length"></p>
+			</div>
+		</div>
+	
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+	<input id="updateId" type="hidden">
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="../MyJs/date_string.js"></script>
+
+
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<!--/_footer /作为公共模版分离出去--> 
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+$(function(){
+	$(window).load(function(){
+		init();
+	});
+	$("#ear_num").keyup(function(){
+		var ear_num=$(this).val();
+		$.post("../pig_boar.do",{"v":"validateEar","ear_num":ear_num},function(data){
+			var result=parseInt(data);
+			if(result>=1){
+				if ( $("#ear_num-error1").length > 0 ) { 
+					$("#ear_num-error1").css("display", "block");
+					$("#ear_num-error1").css("color", "red");
+					$("#ear_num-error1").html("此耳号已存在");
+				}else{
+					$("#ear_div").append('<label id="ear_num-error1"  '+
+					'for="ear_num" style="color:red;position:absolute;display: block;width:120px;height:19px;float:right;z-index:3">此耳号已存在</label>')
+				}
+				return;
+			}else{
+				if ( $("#ear_num-error1").length > 0 ) { 
+					$("#ear_num-error1").css("display", "block");
+					$("#ear_num-error1").css("color", "green");
+					$("#ear_num-error1").html("此耳号可用");
+				}else{
+					$("#ear_div").append('<label id="ear_num-error1"  '+
+					'for="ear_num" style="color:green;position:absolute;display: block;'+
+					'width:120px;height:19px;float:right;z-index:3">此耳号可用</label>')
+				}
+			}
+		},"text")
+	});
+	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-member-add").validate({
+		rules:{
+			ear_num:{
+				required:true,
+				minlength:2,
+				maxlength:16
+			},
+			sex:{
+				required:true,
+			},
+			birth:{
+				required:true,
+			},
+			pig_weight:{
+				required:true,
+			},
+			pig_dn_weight:{
+				required:true,
+			},
+			birth:{
+				required:true,
+			},
+			enter_time:{
+				required:true,
+			},
+			/*公猪不用校验 
+			left_nipples:{
+				required:true,
+			},
+			right_nipples:{
+				required:true,
+			}, */
+			/* uploadfile:{
+				required:true,
+			}, */
+			
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var datas = $(form).serializeArray();
+			$.post("../pig_boar.do",{"v":"boarUpdate","data":datas,"updateId":$("#updateId").val()},function(data){
+				if(data>=1){
+					alert("修改成功");
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.$('.btn-refresh').click();
+					parent.layer.close(index);
+				}
+				else{
+					alert("修改失败");
+				}
+			},"text");
+		}
+	});
+});
+
+//获取请求参数，name: 请求中参数的名字，返回参数的值
+function getQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null) return unescape(r[2]); return null;
+}
+
+//初始化方法
+function init(){
+	var updateId = getQueryString("id");
+	$("#updateId").val(updateId);
+	$.post("../pig_boar.do",{"v":"updateGet","id":updateId},function(data){
+		//加载耳号
+		$("#ear_num").val(data.pig.pig_ear_num);
+		//加载当前重量
+		$("#pig_weight").val(data.pig.pig_weight);
+		//加载断奶重量
+		$("#pig_dn_weight").val(data.pig.pig_dn_weight);
+		//加载左奶头数
+		$("#").val(data.pig.pig_dn_weight);
+		//加载左奶头数
+		$("#left_nipples").val(data.pig.pig_letf_nipples);
+		//加载右奶头
+		$("#right_nipples").val(data.pig.pig_right_nipples);
+		//加载备注
+		$("#beizhu").val(data.pig.pig_desc);
+		 //加载出生日期
+		$("#birth").val(jsonDate_str(data.pig.pig_birth));
+		//加载进场时间
+		$("#enter_time").val(jsonDate_str(data.pig.pig_enter_time));
+		
+		
+		
+		//加载猪栏
+		$("#class_select").html("");
+		var class_content="";
+		$.each(data.classList,function(i,v){
+			class_content+="<option value="+v.id;
+			if(data.pig.pig_class==v.id){
+				class_content+=" selected='selected'";
+			}
+			class_content+=">"+v.cla_name+"</option>";
+		});
+		$("#class_select").html(class_content);
+		
+		//加载父耳号
+		$("#fa_ear").html("");
+		var fa_content="";
+		fa_content+="<option value=''>无</option>";
+		$.each(data.boarList,function(i,v){
+			fa_content+="<option value="+v.pig_id;
+			if(data.pig.pig_fa_ear==v.pig_id){
+				fa_content+=" selected='selected'";
+			}
+			fa_content+=">"+v.pig_ear_num+"</option>";
+		});
+		$("#fa_ear").html(fa_content);
+		
+		//加载母耳号
+		$("#mo_ear").html("");
+		var mo_content="";
+			mo_content+="<option value=''>无</option>";
+		$.each(data.sowList,function(i,v){
+			mo_content+="<option value="+v.pig_id;
+			if(data.pig.pig_mo_ear==v.pig_id){
+				mo_content+=" selected='selected'";
+			}
+			mo_content+=">"+v.pig_ear_num+"</option>";
+		});
+		$("#mo_ear").html(mo_content);
+		
+	 	//加载种类
+		$("#type_select").html("");
+		var level_content="";
+		$.each(data.typeList,function(i,v){
+			level_content+="<option value="+v.var_id;
+			if(data.pig.pig_type_id==v.var_id){
+				level_content+=" selected='selected'";
+			}
+			level_content+=">"+v.var_name+"</option>";
+		});
+		$("#type_select").html(level_content);
+		
+		//加载阶段
+		$("#level_select").html("");
+		var step_content="";
+		$.each(data.stepList,function(i,v){
+			step_content+="<option value="+v.id;
+			if(data.pig.pig_step_id==v.id){
+				step_content+=" selected='selected'";
+			}
+			step_content+=">"+v.step_name+"</option>";
+		});
+		$("#level_select").html(step_content);
+	},"json");
+	
+	
+}
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

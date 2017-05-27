@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<title>生产分析</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 生产分析 <span class="c-gray en">&gt;</span> 猪场价值评估 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-l"> 日期：
+		<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM',isShowClear:true,readOnly:true})" id="date" class="input-text Wdate" style="width:100px;">
+		<input type="text" id="pigPrice" class="input-text" style="width:100px;" placeholder="市场价" value="20">
+		<button type="submit" class="btn btn-primary radius" id="query" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+		<button type="submit" class="btn btn-primary radius" id="exportExcel" name=""><i class="Hui-iconfont">&#xe644;</i> 导出</button>
+		<form id="exportForm" action="/excel/export/exportToPigValue.do" method="post" class="hidden">
+			<input type="hidden" name="exportData" />
+		</form>
+		<button type="submit" class="btn btn-primary radius" id="print" name=""><i class="Hui-iconfont">&#xe640;</i> 打印</button>
+	</div>
+	<div id="printTab" class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<th width="80">时间</th>
+				<th width="80">存栏数</th>
+				<th width="80">存栏重量</th>
+				<th width="80">总价值</th>
+				<th width="80">存栏数增长率</th>
+				<th width="80">存栏重量增长率</th>
+				<th width="80">价值增长率</th>
+				<th width="80">备注</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	</div>
+</div>
+<script type="text/javascript" src="../MyJs/tableExport.js"></script> 
+<script type="text/javascript" src="../MyJs/jquery.base64.js"></script> 
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/jquery.printArea/jquery.PrintArea.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    var exportData = null;
+	$("#exportExcel").click(function(){
+		layer.confirm('确认要导出Excel文件吗？',function(index){
+            var value = JSON.stringify(exportData);
+            $("input[name=exportData]").val(value);
+            $("#exportForm").submit();
+            layer.msg('下载文件!',{icon:1,time:1000});
+		});
+	});
+	
+	$("#query").click(function(){
+		getPigValue();
+	});
+	
+	getPigValue();
+	
+	function getPigValue(){
+	    var date = $("#date").val();
+	    var price = $("#pigPrice").val();
+		if(price=="" || isNaN(price)){
+			price= 20;
+		}
+		$.post("/product_analysis/getPigValue.do",{"date":date},function(data){
+            $.each(data,function(i,v){
+                var class_count_add = v.class_count+v.buy_count-v.sell_count-v.dead_count;
+                var class_weight_add = v.pig_weight_count+v.buy_weight_sum-v.sell_weight_sum-v.dead_weight_sum;
+                var value_all = v.pig_weight_count*price;
+                var value_add = class_weight_add*price;
+                v.value_all = value_all;
+                v.count_add_rate = (class_count_add/v.class_count).toFixed(2);
+                v.weight_add_rate = (class_weight_add/v.pig_weight_count).toFixed(2);
+                v.value_add_rate = (value_add/value_all).toFixed(2);
+                v.remarks = "无";
+                var $tr = "<tr class='text-c'>"+
+                    "<td>"+v.date+"</td>"+
+                    "<td>"+v.class_count+"</td>"+
+                    "<td>"+(v.pig_weight_count).toFixed(2)+"</td>"+
+                    "<td>"+value_all.toFixed(2)+"</td>"+
+                    "<td>"+(class_count_add/v.class_count).toFixed(2)+"</td>"+
+                    "<td>"+(class_weight_add/v.pig_weight_count).toFixed(2)+"</td>"+
+                    "<td>"+(value_add/value_all).toFixed(2)+"</td>"+
+                    "<td>无</td>"+
+                    "</tr>";
+                $(".table>tbody").append($tr);
+            });
+            exportData = data;
+		},"json");
+	}
+	$("#print").click(function(){
+		$("#printTab").printArea();
+	});
+});
+</script> 
+</body>
+</html>

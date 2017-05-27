@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<title>月统计报表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 报表统计 <span class="c-gray en">&gt;</span> 月统计报表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-l"> 日期：
+		<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM',isShowClear:true,readOnly:true})" id="date" class="input-text Wdate" style="width:100px;">
+		<button type="submit" class="btn btn-primary radius" id="query" name=""><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+		<button type="submit" class="btn btn-primary radius" id="exportExcel" name=""><i class="Hui-iconfont">&#xe644;</i> 导出</button>
+		<form id="exportForm" action="/excel/export/exportToMonthTable.do" method="post" class="hidden">
+			<input type="hidden" name="exportData" />
+		</form>
+		<button type="submit" class="btn btn-primary radius" id="print" name=""><i class="Hui-iconfont">&#xe640;</i> 打印</button>
+	</div>
+	<div id="printTab" class="mt-20">
+	<table id="table1" class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr><th class="text-c" colspan="14">存栏统计</th></tr>
+			<tr class="text-c">
+				<th width="100">类型</th>
+				<th width="100">期初存栏</th>
+				<th width="80" style="color:#0000CD;">购买</th>
+				<th width="80" style="color:#FF0000;">淘汰</th>
+				<th width="80" style="color:#FF0000;">销售</th>
+				<th width="80" style="color:#68228B;">其他</th>
+				<th width="100">期末存栏</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<hr>
+	<table id="table2" class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr><th class="text-c" colspan="12">生产统计</th></tr>
+			<tr class="text-c">
+				<th colspan="2">配种</th>
+				<th width="100">母猪数</th>
+				<th width="100">配种次数</th>
+				<th width="100">怀孕次数</th>
+				<th width="100">胎数</th>
+				<th width="100">仔数</th>
+				<th width="100">健仔</th>
+				<th width="100">死胎</th>
+				<th width="100">胎均仔数</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	</div>
+</div>
+<script type="text/javascript" src="../MyJs/tableExport.js"></script> 
+<script type="text/javascript" src="../MyJs/jquery.base64.js"></script> 
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/jquery.printArea/jquery.PrintArea.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    var tableDataOne = null;
+    var tableDataTwo = null;
+
+	$("#print").click(function(){
+		$("#printTab").printArea();
+	});
+	
+	$("#exportExcel").click(function(){
+		layer.confirm('确认要导出Excel文件吗？',function(index){
+			console.log(tableDataOne);
+			console.log(tableDataTwo);
+			var exportData = {};
+			exportData.tableDataOne = tableDataOne;
+			exportData.tableDataTwo = tableDataTwo;
+            var value = JSON.stringify(exportData);
+            $("input[name=exportData]").val(value);
+            $("#exportForm").submit();
+            layer.msg('下载文件!',{icon:1,time:1000});
+		});
+	});
+	
+	$("#query").click(function(){
+		getMonthCount();
+	});
+	
+	getMonthCount();
+	
+	function getMonthCount(){
+		//table1 获取数据
+		$.post("/count/getMonthCountTab1ByDate.do",{date:$("#date").val()},function(data){
+			$("#table1>tbody").empty();
+			var totalPigNum = 0;
+			var totalBuy = 0;
+			var totalDead = 0;
+			var totalSell = 0;
+			$(data).each(function(i,v){
+			    var class_end_num = v.pig_num+v.buy_count-v.dead_count-v.sell_count;
+			    v.class_end_num = class_end_num;
+				var $tr = "<tr class='text-c'>"+
+					"<td>"+v.gra_desc+"</td>"+
+					"<td>"+v.pig_num+"</td>"+
+					"<td>"+v.buy_count+"</td>"+
+					"<td>"+v.dead_count+"</td>"+
+					"<td>"+v.sell_count+"</td><td>0</td>"+
+					"<td>"+class_end_num+"</td>"+
+					"</tr>";
+				totalPigNum += v.pig_num;
+				totalBuy += v.buy_count;
+				totalDead += v.dead_count;
+				totalSell += v.sell_count;
+				$("#table1>tbody").append($tr);
+			});
+            tableDataOne = data;
+			var $total = "<tr class='text-c'>"+
+				"<td>总计</td>"+
+				"<td>"+totalPigNum+"</td>"+
+				"<td>"+totalBuy+"</td>"+
+				"<td>"+totalDead+"</td>"+
+				"<td>"+totalSell+"</td><td>0</td>"+
+				"<td>"+(totalPigNum+totalBuy-totalDead-totalSell)+"</td>"+
+				"</tr>";
+			$("#table1>tbody").append($total);
+		},"json");
+		//table2 获取数据
+		$.post("/count/getMonthCountTab2ByDate.do",{date:$("#date").val()},function(data){
+			$("#table2>tbody").empty();
+			var $tr1 = "<tr class='text-c'><td rowspan='"+(data.length+1)+"'>品种</td></tr>";
+			$("#table2>tbody").append($tr1);
+			var totalMoPigSum = 0;
+			var totalBreSum = 0;
+			var totalPreSum = 0;
+			var totalBorCountsSum = 0;
+			var totalBorSum = 0;
+			var totalBorLiveSum = 0;
+			$(data).each(function(i,v){
+				var dead_num = getNum(v.bor_sum_count)-getNum(v.bor_live_sum);
+				var ave_num = getNum((getNum(v.bor_live_sum)/getNum(v.bor_counts)).toFixed(2));
+				v.dead_num = dead_num;
+				v.ave_num = ave_num;
+				var $tr = "<tr class='text-c'>"+
+					"<td>"+v.var_name+"</td>"+
+					"<td>"+getNum(v.pig_mo_count)+"</td>"+
+					"<td>"+getNum(v.bre_count)+"</td>"+
+					"<td>"+getNum(v.pre_count)+"</td>"+
+					"<td>"+getNum(v.bor_counts)+"</td>"+
+					"<td>"+getNum(v.bor_sum_count)+"</td>"+
+					"<td>"+getNum(v.bor_live_sum)+"</td>"+
+					"<td>"+dead_num+"</td>"+
+					"<td>"+ave_num+"</td>"+
+				"</tr>";
+			totalMoPigSum += getNum(v.pig_mo_count);
+			totalBreSum += getNum(v.bre_count);
+			totalPreSum += getNum(v.pre_count);
+			totalBorCountsSum += getNum(v.bor_counts);
+			totalBorSum += getNum(v.bor_sum_count);
+			totalBorLiveSum += getNum(v.bor_live_sum);
+			$("#table2>tbody").append($tr);
+			});
+            tableDataTwo = data;
+			var $total = "<tr class='text-c'>"+
+				"<td>总配</td><td>全部</td>"+
+				"<td>"+totalMoPigSum+"</td>"+
+				"<td>"+totalBreSum+"</td>"+
+				"<td>"+totalPreSum+"</td>"+
+				"<td>"+totalBorCountsSum+"</td>"+
+				"<td>"+totalBorSum+"</td>"+
+				"<td>"+totalBorLiveSum+"</td>"+
+				"<td>"+(totalBorSum-totalBorLiveSum)+"</td>"+
+				"<td>"+getNum((totalBorLiveSum/totalBorCountsSum).toFixed(2))+"</td>"+
+				"</tr>";
+			$("#table2>tbody").append($total);
+		},"json");
+	}
+	function getNum(dataNum){
+		if(dataNum == undefined || isNaN(dataNum)){
+			dataNum = 0;
+		}
+		return dataNum;
+	}
+});
+</script> 
+</body>
+</html>

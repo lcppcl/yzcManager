@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.product_manage.ChildbirthDao">
+
+    <select id="getPageList" resultType="map">
+        SELECT born.`id`,bor_pre_id,b.bre_time,pre_found_pre,bor_time,bor_count,bor_live_count, p.pig_ear_num
+        FROM yzc_born_record born
+        LEFT JOIN yzc_pregnant_record pregnant ON born.`bor_pre_id`=pregnant.`pre_id`
+        LEFT JOIN yzc_breed_record b ON b.`bre_id`=pregnant.`pre_bre_id`
+        LEFT JOIN yzc_pig p ON b.bre_mo_ear = p.pig_id
+        <if test="ear_num != null and ear_num != ''">
+            WHERE p.pig_ear_num = #{ear_num}
+        </if>
+    </select>
+
+    <select id="getById" resultType="map">
+        SELECT born.`id`,bor_pre_id,b.bre_time,pre_found_pre,bor_time,bor_count,bor_live_count, p.pig_ear_num
+        FROM yzc_born_record born
+        LEFT JOIN yzc_pregnant_record pregnant ON born.`bor_pre_id`=pregnant.`pre_id`
+        LEFT JOIN yzc_breed_record b ON b.`bre_id`=pregnant.`pre_bre_id`
+        LEFT JOIN yzc_pig p ON b.bre_mo_ear = p.pig_id
+        WHERE born.`id` = #{id}
+    </select>
+
+</mapper>

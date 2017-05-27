@@ -1,0 +1,158 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>猪舍列表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 猪场管理 <span class="c-gray en">&gt;</span> 猪舍管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+
+	<div class="text-c">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入猪舍关键字" id="gra_name" name="gra_name">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员关键字" id="emp_name" name="emp_name">
+		<button type="submit" class="btn btn-success" id="query" ><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+	</div>
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="javascript:;" onclick="addMethod('添加猪舍','grade-add.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管猪舍</a></span> <span class="r">共有数据：<strong></strong> 条</span> </div>
+	<table class="table table-border table-bordered table-bg" id="grade_table">
+		<thead>
+			<tr>
+				<th class="text-c" scope="col" colspan="9">猪舍管理</th>
+			</tr>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="">舍名</th>
+				<th width="">猪栏数</th>
+				<th width="">建造日期</th>
+				<th width="">当前猪存栏数</th>
+				<th width="">猪舍管理者</th>
+				<th width="">备注</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<div id="pageNum" class="text-c">
+		<a id="first" class="btn btn-primary radius">首页</a>
+		<a id="lastPage" class="btn btn-primary radius" >上一页</a>
+		<span class="pageSpan"><label id="nowPage">0</label>/<label id="totalPage">0</label></span>
+		<a id="nextPage" class="btn btn-primary radius">下一页</a>
+		<a id="last" class="btn btn-primary radius">尾页</a>
+	</div>
+</div>
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>  
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="../MyJs/date_string.js"></script> 
+<script type="text/javascript" src="../MyJs/undefined_conversion.js"></script>
+<script type="text/javascript">
+	/*添加*/
+    function addMethod(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+	/*编辑*/
+    function editMethod(id){
+        layer_show("修改" , "grade-update.html?id="+id , 800, 510 );
+    }
+
+    //删除
+    function delMethod(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.post("/pig_manage/grade/deleteGrade.do",{"gra_id":id},function(data){
+                if(data == true){
+                    $(obj).parents("tr").remove();
+                    layer.msg('已删除!',{icon:1,time:1000});
+                }else {
+                    layer.msg('删除失败!',{icon:1,time:1000});
+                }
+            },"json");
+        });
+    }
+
+	$(function(){
+		 $(window).load(function(){
+			 getListByPage(1);
+		});
+		//搜索
+		$("#query").click(function () {
+			getListByPage(1);
+		});
+		//首页
+		$("#first").click(function(){
+			getListByPage(1);
+		});
+		//尾页
+		$("#last").click(function(){
+			var total_page = parseInt($("#totalPage").html());
+			getListByPage(total_page);
+		});
+		//上一页
+		$("#lastPage").click(function(){
+			var now_page = parseInt($("#nowPage").html());
+			getListByPage(now_page <= 1 ? 1 : now_page - 1);
+		});
+		//下一页
+		$("#nextPage").click(function(){
+			var now_page = parseInt($("#nowPage").html());
+			var total_page = parseInt($("#totalPage").html());
+			getListByPage(now_page + 1 > total_page ? total_page : now_page + 1);
+		});
+	});
+
+	function getListByPage(pageNo){
+		var emp_name = $("#emp_name").val();
+		var gra_name = $("#gra_name").val();
+		$.post("/pig_manage/grade/getGradePage.do",{"current":pageNo,"size":6,"emp_name":emp_name,"gra_name":gra_name},function(data){
+			$("#totalPage").html(data.pages);
+			$("#nowPage").html(data.current);
+			$("strong").html(data.total);
+			$("#grade_table > tbody").empty();
+			$.each(data.records,function(i,v){
+				var content = "";
+				content+="<tr class='text-c'>";
+				content+='<td><input type="checkbox" value="1" name=""></td>';
+				content+='<td>'+v.gra_name+'</td>';
+				content+='<td>'+undefined_conversion(v.ccount)+'</td>';
+				content+='<td>'+v.gra_build_time+'</td>';
+				content+='<td>'+undefined_conversion(v.ppcount)+'</td>';
+				content+='<td>'+undefined_conversion(v.emp_name)+'</td>';
+				content+='<td>'+undefined_conversion(v.gra_desc)+'</td>';
+				content+='<td class="td-manage">' +
+					'<a title="编辑" href="javascript:;" onclick="editMethod('+v.gra_id+');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> ' +
+					'<a title="删除" href="javascript:;" onclick="delMethod(this,' + v.gra_id + ')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>' +
+					'</td>';
+				content+="</tr>";
+				//alert(content);
+				$("#grade_table > tbody").append(content);
+			});
+		},"json");
+	}
+</script>
+</body>
+</html>

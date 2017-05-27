@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcOrdersMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcOrders">
+		<id column="uuid" property="uuid" />
+		<result column="order_date" property="order_date" />
+		<result column="order_sub" property="order_sub" />
+		<result column="order_sup" property="order_sup" />
+		<result column="order_emp" property="order_emp" />
+	</resultMap>
+
+</mapper>

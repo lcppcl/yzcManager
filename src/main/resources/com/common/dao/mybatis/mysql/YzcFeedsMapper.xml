@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcFeedsMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcFeeds">
+		<id column="fes_id" property="fes_id" />
+		<result column="fes_name" property="fes_name" />
+		<result column="fes_price" property="fes_price" />
+		<result column="fes_par_id" property="fes_par_id" />
+	</resultMap>
+
+</mapper>

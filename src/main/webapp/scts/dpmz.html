@@ -1,0 +1,158 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" href="../lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>待配母猪提示</title>
+</head>
+<body class="pos-r">
+
+<div style="margin-left:1px;">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 生产管理 <span class="c-gray en">&gt;</span> 待配母猪提示 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<div class="text-c"> 从：
+			<input type="text"  id="datemin" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemin\')||\'%y-%M-%d\'}'})" class="input-text Wdate" style="width:120px;">
+			开始到
+			<input type="text"  id="datemax" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" class="input-text Wdate" style="width:120px;">
+			
+			<button name="" id="" class="btn btn-success" type="submit" onclick="select()"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+		</div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="r" id="zonggongshuju"> 共有数据：<strong>0</strong> 条</span> </div>
+		<div class="mt-20">
+			<table id="dpmz" class="table table-border table-bordered table-bg table-hover table-sort">
+				<thead>
+					<tr class="text-c">
+						<th width="40"><input name="" type="checkbox" value=""></th>
+						<th width="70">断奶/反情时间</th>
+						<th width="60">母猪耳号</th>
+						<th width="40">天数</th>
+						<th width="80">超期天数</th>
+						<th width="80">舍号</th>
+						<th width="70">栏位</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="text-c va-m">
+						<td><input name="" type="checkbox" value=""></td>
+						<td>2016-10-01</td>
+						<td>10001</td>
+						
+						<td>30</td>
+						<td>12</td>
+						<td>1</td>
+						<td>1-1</td>
+				
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="page" style="text-align:right; margin-top:20px; margin-right:0px;">
+		<span id="ago">上一页</span>
+		<span class="page"><label id="pageCode"></label>/<label id="totalPage">0</label></span>
+		<span id="next">下一页</span>
+	</div>
+	</div>
+</div>
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+
+
+</body>
+<script type="text/javascript" src="../MyJs/date_string.js"></script>
+<script type="text/javascript">
+var page = 1;
+var num=5;
+var allnum=0;
+window.onload=showInfo(page,num);
+
+function select(){
+	page=1;
+	showInfo(page,num)
+	}
+
+function showInfo(page,num) {
+	//获取误差天数，默认是2000
+	var cxts=$("#cxts").val();
+	var datemin=$("#datemin").val();
+	var datemax=$("#datemax").val();
+    
+    $.getJSON('../scts.do',{"v":"dpmz","d":cxts,"page":page,"num":num,"datemin":datemin,"datemax":datemax},function (data) {
+    	$("#dpmz > tbody").empty();
+    	//遍历数据
+    	$(data).each(function (i,v) {
+    		var content="<tr class='text-c va-m'>";
+    		content +="<td><input name='' type='checkbox' value=''></td>";
+    		content += "<td>"+jsonDate_str(v.dn_data)+"</td>";
+    		content += "<td>"+v.mz_ear+"</td>";
+    		content += "<td>"+v.预产日期+"</td>";
+
+    		if(v.误差天数>0){
+    			content += "<td>"+v.误差天数+"</td>";
+    		}else{
+    			content += "<td style='color:red;'><strong>"+(v.误差天数*-1)+"</strong></td>";
+    		}
+    		content += "<td>"+v.cla_name+"</td>";
+    		content += "<td>"+v.gra_name+"</td>";
+    		content +="</tr>";
+    		var tp=v.总共条数;
+    		allnum=tp;
+    		$("#zonggongshuju").html(" 共有数据：<strong>"+allnum+"</strong> 条");
+    		if(allnum%num==0){
+    			$("#totalPage").html(parseInt(allnum/num));
+    		}else{
+    			$("#totalPage").html(parseInt(allnum/num)+1);
+    		}
+            $("#dpmz > tbody").append(content);
+            $("#pageCode").html(page);
+           });
+    	
+    });
+}
+
+//上一页
+$("#ago").click(function(){
+	if (page <= 1) {
+		page = 1;
+		
+		return;
+	}
+	page = page - 1;
+	$("#pageCode").html(page);
+	showInfo(page,num);
+});
+
+//下一页
+$("#next").click(function(){
+	if(page>=$("#totalPage").html()){
+		return;
+	}
+	page = page + 1;
+	$("#pageCode").html(page);
+	showInfo(page,num);
+});
+</script>
+</html>

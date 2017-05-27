@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.pig_manage.DeathRecordDao">
+
+
+    <select id="getDeathRecordList" resultType="map">
+        SELECT dea_id,p.pig_id,p.pig_ear_num,d.dea_time,d.dea_reason,e.emp_id,e.emp_name
+        FROM yzc_death_record d
+        LEFT JOIN yzc_pig p ON d.dea_ear=p.pig_id
+        LEFT JOIN yzc_employee e ON e.emp_id=d.dea_rec_peo
+        <where>
+            <if test="startDate != null and startDate != ''">
+                AND dea_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND dea_time &lt;= #{endDate}
+            </if>
+            <if test="ear_num != null and ear_num != ''">
+                AND p.pig_ear_num LIKE CONCAT('%',#{ear_num},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getDeathRecordById" resultType="map">
+        SELECT dea_id,p.pig_id,p.pig_ear_num,d.dea_time,d.dea_reason,e.emp_id,e.emp_name
+        FROM yzc_death_record d
+        LEFT JOIN yzc_pig p ON d.dea_ear=p.pig_id
+        LEFT JOIN yzc_employee e ON e.emp_id=d.dea_rec_peo
+        WHERE dea_id = #{id}
+    </select>
+
+</mapper>

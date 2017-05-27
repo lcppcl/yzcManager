@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcPigMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcPig">
+		<id column="pig_id" property="pig_id" />
+		<result column="pig_ear_num" property="pig_ear_num" />
+		<result column="pig_sex" property="pig_sex" />
+		<result column="pig_class" property="pig_class" />
+		<result column="pig_fa_ear" property="pig_fa_ear" />
+		<result column="pig_mo_ear" property="pig_mo_ear" />
+		<result column="pig_source" property="pig_source" />
+		<result column="pig_birth" property="pig_birth" />
+		<result column="pig_weight" property="pig_weight" />
+		<result column="pig_dn_weight" property="pig_dn_weight" />
+		<result column="pig_enter_time" property="pig_enter_time" />
+		<result column="pig_level" property="pig_level" />
+		<result column="pig_letf_nipples" property="pig_letf_nipples" />
+		<result column="pig_right_nipples" property="pig_right_nipples" />
+		<result column="pig_is_spay" property="pig_is_spay" />
+		<result column="pig_health" property="pig_health" />
+		<result column="pig_out_time" property="pig_out_time" />
+		<result column="pig_type_id" property="pig_type_id" />
+		<result column="pig_step_id" property="pig_step_id" />
+		<result column="pig_desc" property="pig_desc" />
+		<result column="pig_is_dead" property="pig_is_dead" />
+	</resultMap>
+
+</mapper>

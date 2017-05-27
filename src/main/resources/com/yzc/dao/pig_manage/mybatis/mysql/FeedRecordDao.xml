@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.pig_manage.FeedRecordDao">
+
+    <select id="getFeedList" resultType="map">
+        SELECT f.id feed_id,f.fee_time,c.id cla_id,c.cla_name,f.fee_count,ff.fes_id,ff.fes_name,e.emp_id,e.emp_name
+        FROM yzc_feed_record f
+        LEFT JOIN yzc_class c ON f.fee_class=c.id
+        LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+        LEFT JOIN yzc_feeds ff ON ff.fes_id =f.fee_fes_id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                AND f.fee_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND f.fee_time &lt;= #{endDate}
+            </if>
+            <if test="feed_user != null and feed_user != ''">
+                AND e.emp_name LIKE CONCAT('%',#{feed_user},'%')
+            </if>
+            <if test="cla_id != null and cla_id != 0">
+                AND c.id = #{cla_id}
+            </if>
+        </where>
+        ORDER BY f.fee_time DESC
+    </select>
+
+    <select id="getFeedById" resultType="map">
+        SELECT f.id feed_id,f.fee_time,c.id cla_id,c.cla_name,f.fee_count,ff.fes_id,ff.fes_name,e.emp_id,e.emp_name
+        FROM yzc_feed_record f
+        LEFT JOIN yzc_class c ON f.fee_class=c.id
+        LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+        LEFT JOIN yzc_feeds ff ON ff.fes_id =f.fee_fes_id
+        WHERE f.id = #{id}
+    </select>
+
+</mapper>

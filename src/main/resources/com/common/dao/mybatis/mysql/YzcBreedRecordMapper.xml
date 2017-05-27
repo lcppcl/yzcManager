@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcBreedRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcBreedRecord">
+		<id column="bre_id" property="bre_id" />
+		<result column="bre_time" property="bre_time" />
+		<result column="bre_mo_ear" property="bre_mo_ear" />
+		<result column="bre_fa_ear" property="bre_fa_ear" />
+	</resultMap>
+
+</mapper>

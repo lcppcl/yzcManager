@@ -1,0 +1,192 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+
+<title>母猪管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 猪场管理 <span class="c-gray en">&gt;</span> 母猪管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+
+	<div class="text-c"> 入场日期范围：
+		<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,readOnly:true,maxDate:'#F{$dp.$D(\'dateMax\')||\'%y-%M-%d\'}'})" id="dateMin" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,readOnly:true,minDate:'#F{$dp.$D(\'dateMin\')}',maxDate:'%y-%M-%d'})" id="dateMax" class="input-text Wdate" style="width:120px;">
+
+		<select class="select select-option" size="1" name="var_id" id="var_id" style="width:120px;height:31px;padding-bottom: 4px">
+			<option value="">请选择品种</option>
+		</select>
+
+		<input type="text" class="input-text" style="width:250px" placeholder="输入耳号" id="searchId" name="searchId">
+		<button type="submit" class="btn btn-success radius" id="mul_query" name="mul_query"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+	</div>
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="pig_add('添加','sow-add.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加母猪</a></span> <span class="r">共有数据：<strong>0</strong> 条</span> </div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort" id="sow_table">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="">耳号</th>
+				<th width="">父耳号</th>
+				<th width="">母耳号</th>
+				<th width="">舍号</th>
+				<th width="">栏位</th>
+				<th width="">品种</th>
+				<th width="">来源</th>
+<!-- 				<th width="">在栏状态</th> -->
+				<th width="">当前状态</th>
+				<th width="">已产胎数</th>
+				<th width="">总猪仔数</th>
+				<th width="">出生日期</th>
+				<th width="">重量</th>
+				<th width="">断奶重量</th>
+				<th width="">进场日期</th>
+				<th width="">左奶头数</th>
+				<th width="">右奶头数</th>
+				<th width="">备注</th>
+				<th width="">操作员</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		
+	</table>
+		<div id="pageNum" class="text-c">
+			<a id="first" class="btn btn-primary radius">首页</a>
+			<a id="lastPage" class="btn btn-primary radius" >上一页</a>
+			<span class="pageSpan"><label id="nowPage">0</label>/<label id="totalPage">0</label></span>
+			<a id="nextPage" class="btn btn-primary radius">下一页</a>
+			<a id="last" class="btn btn-primary radius">尾页</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="../MyJs/date_string.js"></script>
+<script type="text/javascript" src="../MyJs/undefined_conversion.js"></script>
+<script type="text/javascript">
+/*添加*/
+function pig_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+
+/*编辑*/
+function editUpdate(id){
+	layer_show("修改信息" , "sow-update.html?id="+id , 800, 510 );
+}
+
+//删除
+function pig_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.post("/pig_manage/pig/delPigById.do",{"pig_id":id},function(data){
+			if(data == true){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			}else {
+				layer.msg('删除失败!',{icon:1,time:1000});
+			}
+		},"json");
+	});
+}
+$(function(){
+    $(window).load(function () {
+        getVarietyList();
+        getListByPage(1);
+    });
+    //搜索
+    $("#mul_query").click(function () {
+        getListByPage(1);
+    });
+
+	//首页
+    $("#first").click(function () {
+        getListByPage(1);
+    });
+	//尾页
+    $("#last").click(function () {
+        var total_page = parseInt($("#totalPage").html());
+        getListByPage(total_page);
+    });
+	//上一页
+    $("#lastPage").click(function () {
+        var now_page = parseInt($("#nowPage").html());
+        getListByPage(now_page <= 1 ? 1 : now_page - 1);
+    });
+	//下一页
+    $("#nextPage").click(function () {
+        var now_page = parseInt($("#nowPage").html());
+        var total_page = parseInt($("#totalPage").html());
+        getListByPage(now_page + 1 > total_page ? total_page : now_page + 1);
+    });
+});
+
+function getListByPage(pageNo){
+    var dateMin = $("#dateMin").val();
+    var dateMax = $("#dateMax").val();
+    var var_id = $("#var_id").val();
+    var searchId = $("#searchId").val();
+ 	$.post("/pig_manage/pig/getPigPageByParams.do",{"current":pageNo,"size":5,"startDate":dateMin,"endDate":dateMax,"var_id":var_id,"ear_num":searchId,"pig_sex":"母猪"},function(data){
+		$("#totalPage").html(data.pages);
+		$("#nowPage").html(data.current);
+		$("strong").html(data.total);
+		$("#sow_table tr:gt(0)").remove();
+		$.each(data.records,function(i,v){
+			var content = "";
+			content+="<tr class='text-c'>";
+			content+='<td><input type="checkbox" value="1" name=""></td>';
+			content+='<td>'+v.pig_ear_num+'</td>';
+ 			content+='<td>'+undefined_conversion(v.fa_ear)+'</td>';
+			content+='<td>'+undefined_conversion(v.mo_ear)+'</td>';
+			content+='<td>'+v.gra_name+'</td>';
+			content+='<td>'+v.cla_name+'</td>';
+			content+='<td>'+v.var_name+'</td>';
+			content+='<td>'+v.pig_source+'</td>';
+			content+='<td>'+v.step_name+'</td>';
+			content+='<td>'+v.ptime+'</td>';
+			content+='<td>'+v.scount+'</td>';
+			content+='<td>'+v.pig_birth+'</td>';
+			content+='<td>'+v.pig_weight+'</td>';
+			content+='<td>'+v.pig_dn_weight+'</td>';
+			content+='<td>'+v.pig_enter_time+'</td>';
+			content+='<td>'+undefined_conversion(v.pig_letf_nipples)+'</td>';
+			content+='<td>'+undefined_conversion(v.pig_right_nipples)+'</td>';
+			content+='<td>'+v.pig_desc+'</td>';
+			content+='<td>'+v.emp_name+'</td>';
+			content+='<td class="td-manage"><a title="编辑" href="javascript:;" onclick="editUpdate('+v.pig_id+');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>' +
+                '<a title="删除" href="javascript:;" onclick="pig_del(this,' + v.pig_id + ')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>' +
+				'</td>';
+			content+="</tr>";
+			//alert(content);
+			$("#sow_table").append(content);
+		}); 
+	},"json"); 
+}
+
+function getVarietyList() {
+    //加载品种
+    $.post("/pig_manage/pig/getVarietyList.do",function(data){
+        $(data).each(function(i,v) {
+            var content = "<option value="+v.var_id+">"+v.var_name+"</option>";
+            $("#var_id").append(content);
+        });
+    },"json");
+}
+</script> 
+</body>
+</html>

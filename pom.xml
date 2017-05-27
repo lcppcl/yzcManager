@@ -1,0 +1,355 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.yzc</groupId>
+  <artifactId>yzcManager</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>yzcManager Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <jdk.version>1.7</jdk.version>
+    <project.encoding>UTF-8</project.encoding>
+
+    <!-- junit版本号 -->
+    <junit.version>4.12</junit.version>
+
+    <!-- spring版本号 -->
+    <spring.version>4.3.3.RELEASE</spring.version>
+    <freemarker.version>2.3.20</freemarker.version>
+    <aspectjweaver.version>1.6.11</aspectjweaver.version>
+
+    <!-- mybatis版本号 -->
+    <ognl.version>2.6.9</ognl.version>
+    <javassist.version>3.17.1-GA</javassist.version>
+    <cglib.version>2.2.2</cglib.version>
+    <pagehelper.version>4.1.6</pagehelper.version>
+
+    <!-- mybatis-plus -->
+    <mybatis-plus.version>2.0.2</mybatis-plus.version>
+    <velocity.version>1.7</velocity.version>
+    <velocity-tools.version>2.0</velocity-tools.version>
+
+    <!-- mysql驱动版本号 -->
+    <mysql-driver.version>5.1.32</mysql-driver.version>
+    <druid.version>1.0.19</druid.version>
+
+
+    <!-- log4j日志包版本号 -->
+    <log4j.version>1.2.17</log4j.version>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
+    <log4j-core.version>2.0-beta9</log4j-core.version>
+    <commons-logging.version>1.1.1</commons-logging.version>
+
+    <!-- jstl -->
+    <jstl.version>1.2</jstl.version>
+
+    <!-- json -->
+    <json.version>20160810</json.version>
+    <json-lib.version>2.4</json-lib.version>
+    <jackson-dataformat-xml.version>2.8.2</jackson-dataformat-xml.version>
+
+    <!-- common包 -->
+    <commons-dbcp.version>1.2.2</commons-dbcp.version>
+    <commons-io.version>2.4</commons-io.version>
+
+    <!-- servlet -->
+    <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
+    <jsp-api.version>2.2</jsp-api.version>
+
+    <!-- easypoi 版本-->
+    <easypoi.version>2.3.1</easypoi.version>
+
+  </properties>
+
+  <dependencies>
+    <!-- 添加jstl依赖 -->
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>${jstl.version}</version>
+    </dependency>
+
+    <!-- 添加junit4依赖 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <!-- 指定范围，在测试时才会加载 -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- springmvc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-oxm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>${aspectjweaver.version}</version>
+    </dependency>
+
+    <!-- mybatis依赖 -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus</artifactId>
+      <version>${mybatis-plus.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>${ognl.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons-logging.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>${javassist.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>${cglib.version}</version>
+    </dependency>
+
+    <!-- 添加mysql驱动依赖 -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-driver.version}</version>
+    </dependency>
+
+    <!-- 连接池 -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>${druid.version}</version>
+    </dependency>
+
+    <!-- dbcp -->
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>${commons-dbcp.version}</version>
+    </dependency>
+
+    <!-- json -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${json.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>${jackson-dataformat-xml.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson-dataformat-xml.version}</version>
+    </dependency>
+
+    <!--json-lib-->
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>${json-lib.version}</version>
+      <classifier>jdk15</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>${pagehelper.version}</version>
+    </dependency>
+
+    <!-- servlet-api 编译时用，发布后不用 -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${javax.servlet-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>${jsp-api.version}</version>
+    </dependency>
+
+    <!-- freemarker -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>${freemarker.version}</version>
+    </dependency>
+
+    <!-- easypoi excel工具 -->
+    <dependency>
+      <groupId>org.jeecg</groupId>
+      <artifactId>easypoi-base</artifactId>
+      <version>${easypoi.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jeecg</groupId>
+      <artifactId>easypoi-web</artifactId>
+      <version>${easypoi.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jeecg</groupId>
+      <artifactId>easypoi-annotation</artifactId>
+      <version>${easypoi.version}</version>
+    </dependency>
+
+    <!-- 模板引擎 -->
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>${velocity.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools</artifactId>
+      <version>${velocity-tools.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>dom4j</artifactId>
+          <groupId>dom4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>struts-core</artifactId>
+          <groupId>org.apache.struts</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>struts-tiles</artifactId>
+          <groupId>org.apache.struts</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>struts-taglib</artifactId>
+          <groupId>org.apache.struts</groupId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- velocity begin -->
+  </dependencies>
+
+  <build>
+    <finalName>yzcManager</finalName>
+    <plugins>
+      <!-- 资源文件拷贝插件 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <encoding>${project.encoding}</encoding>
+        </configuration>
+      </plugin>
+      <!-- java编译插件 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+          <encoding>${project.encoding}</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!-- 配置Tomcat插件 -->
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

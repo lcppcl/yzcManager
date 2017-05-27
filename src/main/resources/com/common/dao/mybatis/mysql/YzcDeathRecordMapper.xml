@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcDeathRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcDeathRecord">
+		<id column="dea_id" property="dea_id" />
+		<result column="dea_ear" property="dea_ear" />
+		<result column="dea_time" property="dea_time" />
+		<result column="dea_reason" property="dea_reason" />
+		<result column="dea_rec_peo" property="dea_rec_peo" />
+	</resultMap>
+
+</mapper>

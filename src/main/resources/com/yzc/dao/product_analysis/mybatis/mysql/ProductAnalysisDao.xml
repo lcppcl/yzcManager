@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.product_analysis.ProductAnalysisDao">
+
+    <select id="getPigValue" resultType="map">
+        SELECT #{date} AS `date`,COUNT(CASE WHEN p.pig_enter_time >= CONCAT(#{date},'-01') AND p.pig_is_dead=1 THEN pig_id END) class_count,
+        IFNULL(SUM(CASE WHEN p.pig_enter_time >= CONCAT(#{date},'-01') AND p.pig_is_dead=1 THEN pig_weight END),0) pig_weight_count,
+        COUNT(CASE WHEN  deal_time LIKE  CONCAT(#{date},'%') AND deal_buy_sell='购入' THEN deal_id END) buy_count,
+        IFNULL(SUM(CASE WHEN  deal_time LIKE CONCAT(#{date},'%') AND deal_buy_sell='购入' THEN pig_weight END),0) buy_weight_sum,
+        COUNT(CASE WHEN deal_time LIKE CONCAT(#{date},'%') AND deal_buy_sell='卖出' THEN deal_id END) sell_count,
+        IFNULL(SUM(CASE WHEN deal_time LIKE CONCAT(#{date},'%') AND deal_buy_sell='卖出' THEN pig_weight END),0) sell_weight_sum,
+        COUNT(CASE WHEN  dea_time LIKE CONCAT(#{date},'%') THEN dea_id END) dead_count,
+        IFNULL(SUM(CASE WHEN  dea_time LIKE CONCAT(#{date},'%') THEN pig_weight END),0) dead_weight_sum 
+        FROM yzc_class c 
+        LEFT JOIN yzc_pig p ON c.id=p.pig_class 
+        LEFT JOIN yzc_deal_pig d ON d.deal_ear=p.pig_id 
+        LEFT JOIN yzc_death_record t ON t.dea_ear=p.pig_id 
+    </select>
+
+    <select id="getMortalityByDate" resultType="map">
+        SELECT COUNT(p.pig_id) AS value,s.step_name name
+        FROM (yzc_death_record d LEFT JOIN yzc_pig p ON d.dea_ear=p.pig_id)
+        LEFT JOIN yzc_step s ON p.pig_step_id = s.id
+        <if test="date != null and date != ''">
+            WHERE dea_time LIKE CONCAT('%',#{date},'%')
+        </if>
+        GROUP BY s.id
+    </select>
+
+    <select id="getBornProductivity" resultType="map">
+        SELECT DATE_FORMAT(bor_time,'%Y-%m') months,SUM(bor_live_count) counts FROM yzc_born_record GROUP BY months
+    </select>
+
+    <select id="getMonthBreedsProductivity" resultType="map">
+        SELECT DATE_FORMAT(bre_time,'%Y-%m') months,COUNT(bre_id) counts FROM yzc_breed_record GROUP BY months
+    </select>
+
+    <select id="getPregnancyByDate" resultType="map">
+        SELECT stl.*
+        FROM (
+            SELECT DATE_FORMAT(`b`.`bre_time`,'%Y-%m') AS `months`,
+            COUNT(`g`.`pig_id`) AS `bre_count`,
+            COUNT(`p`.`pre_id`) AS `pre_count`
+            FROM `yzc_breed_record` `b`
+            LEFT JOIN `yzc_pig` `g` ON `g`.`pig_id` = `b`.`bre_mo_ear`
+            LEFT JOIN `yzc_pregnant_record` `p` ON `b`.`bre_id` = `p`.`pre_bre_id`
+            GROUP BY `months`
+        ) stl
+        <where>
+            <if test="oneDate != null and oneDate != ''">
+                AND stl.months &gt;= #{oneDate}
+            </if>
+            <if test="twoDate != null and twoDate != ''">
+               AND stl.months &lt;= #{twoDate}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcClassMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcClass">
+		<id column="id" property="id" />
+		<result column="cla_gra_id" property="cla_gra_id" />
+		<result column="cla_name" property="cla_name" />
+		<result column="cla_eara" property="cla_eara" />
+		<result column="cla_breeder" property="cla_breeder" />
+		<result column="cla_is_intact" property="cla_is_intact" />
+		<result column="cla_desc" property="cla_desc" />
+	</resultMap>
+
+</mapper>

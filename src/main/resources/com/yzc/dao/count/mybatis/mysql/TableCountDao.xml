@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.count.TableCountDao">
+
+    <select id="getUserCountByDate" resultType="map">
+        SELECT o.uuid,p.par_name,o.order_date,o.order_sub,e.emp_name
+        FROM yzc_orders o
+        JOIN yzc_employee e ON o.order_emp = e.emp_id
+        JOIN yzc_partner p ON o.order_sup = p.par_id
+        <where>
+            <if test="oneDate != null and oneDate != ''">
+                AND o.order_date &gt;= #{oneDate}
+            </if>
+            <if test="twoDate != null and twoDate != ''">
+                AND o.order_date &lt;= #{twoDate}
+            </if>
+            <if test="oneDate != null and oneDate != ''">
+                AND p.par_name = #{par_name}
+            </if>
+        </where>
+    </select>
+
+    <select id="getPigSellCountByDate" resultType="map">
+        SELECT * FROM pig_count
+        <where>
+            <if test="oneDate != null and oneDate != ''">
+                AND order_date &gt;= #{oneDate}
+            </if>
+            <if test="twoDate != null and twoDate != ''">
+                AND order_date &lt;= #{twoDate}
+            </if>
+            <if test="oneDate != null and oneDate != ''">
+                AND par_name = #{par_name}
+            </if>
+        </where>
+    </select>
+
+    <select id="getMonthCountTab1ByDate" resultType="map">
+        SELECT g.gra_id,g.gra_desc,COUNT(c.id) class_num,
+        COUNT(CASE WHEN pig_enter_time >= CONCAT(#{date},'-01')  THEN pig_id END) pig_num,
+        COUNT(CASE WHEN  deal_time LIKE CONCAT(#{date},'%')AND deal_buy_sell='购入' THEN deal_id END) buy_count,
+        COUNT(CASE WHEN deal_time LIKE CONCAT(#{date},'%') AND deal_buy_sell='卖出' THEN deal_id END) sell_count,
+        COUNT(CASE WHEN  dea_time LIKE CONCAT(#{date},'%') THEN dea_id END) dead_count
+        FROM yzc_grade g
+        LEFT JOIN yzc_class c ON g.gra_id=c.cla_gra_id
+        LEFT JOIN yzc_pig p ON p.pig_class=c.id
+        LEFT JOIN yzc_deal_pig d ON d.deal_ear=p.pig_id
+        LEFT JOIN yzc_death_record t ON t.dea_ear=p.pig_id
+        GROUP BY gra_id
+    </select>
+
+    <select id="getMonthCountTab2ByDate" resultType="map">
+        SELECT v.var_id,v.var_name,n.bor_time,COUNT(pig_id) pig_mo_count,
+        COUNT(CASE WHEN  b.bre_time LIKE CONCAT(#{date},'%') THEN b.bre_id END) bre_count,
+        COUNT(CASE WHEN  p.pre_found_pre LIKE CONCAT(#{date},'%') THEN p.pre_id END) pre_count,
+        COUNT(CASE WHEN  n.bor_time LIKE CONCAT(#{date},'%') THEN n.id END) bor_counts,
+        SUM(CASE WHEN  n.bor_time LIKE CONCAT(#{date},'%') THEN n.bor_count END) bor_sum_count,
+        SUM(CASE WHEN  n.bor_time LIKE CONCAT(#{date},'%') THEN n.bor_live_count END) bor_live_sum
+        FROM yzc_variety v
+        LEFT JOIN yzc_pig g ON v.var_id=g.pig_type_id
+        LEFT JOIN yzc_breed_record b ON g.pig_id=b.bre_mo_ear
+        LEFT JOIN yzc_pregnant_record p ON p.pre_id=b.bre_id
+        LEFT JOIN yzc_born_record n ON n.bor_pre_id=p.pre_id
+        GROUP BY v.var_id
+    </select>
+
+    <select id="getLivestockCountByDate" resultType="map">
+        SELECT gra_id,gra_name,gra_desc,
+        COUNT(CASE WHEN pig_enter_time >= CONCAT(#{date},'-01') AND pig_is_dead=1 THEN pig_id END) pig_num,
+        IFNULL(SUM(CASE WHEN pig_enter_time >= CONCAT(#{date},'-01') AND pig_is_dead=1 THEN pig_weight END),0) pig_weight_count
+        FROM (yzc_grade g LEFT JOIN yzc_class c ON c.cla_gra_id=g.gra_id)
+        LEFT JOIN yzc_pig p ON c.id=p.pig_class
+        GROUP BY gra_id
+    </select>
+
+</mapper>

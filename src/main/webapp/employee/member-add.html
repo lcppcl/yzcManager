@@ -1,0 +1,282 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>添加员工</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form_member">
+		<input type="hidden" id="emp_id" name="emp_id" >
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录账号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="emp_account" name="emp_account">
+				<label id="emp_account_error" class="error" for="emp_account" style="display: block;"></label>
+			</div>
+		</div>
+		<div class="row cl" name="remove_div">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录密码：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="password" class="input-text" value="" placeholder="" id="emp_pwd" name="emp_pwd">
+			</div>
+		</div>
+		<div class="row cl" name="remove_div">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="password" class="input-text" value="" placeholder="" id="emp_pwd_re" name="emp_pwd_re">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="emp_name" name="emp_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input value="男" class="sex" type="radio" id="sex-1" name="emp_sex"  checked>
+					<label for="sex-1">男</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="女" class="sex" id="sex-2" name="emp_sex">
+					<label for="sex-2">女</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="保密" class="sex" id="sex-3" name="emp_sex">
+					<label for="sex-3">保密</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>生日：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})" id="emp_birth" name="emp_birth" class="input-text Wdate">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="emp_phone" name="emp_phone">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="@" name="emp_email" id="emp_email">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>入职日期：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})" id="emp_in_date" name="emp_in_date" class="input-text Wdate">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所属部门：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1" name="emp_dept_id" id="emp_dept_id">
+						<option value="" selected>请选择部门</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea id="emp_desc" name="emp_desc" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="textarealength(this,100)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" id="empAddSubmit" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="../MyJs/date_string.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+    $(function(){
+        $(window).load(function(){
+            init();
+            updateInfo();
+        });
+
+        function checkAccount(emp_account) {
+            $.post("/staffing/employee/checkEmpAccount.do",{"account":emp_account},function(data){
+                if(data === false){
+                    $("#emp_account_error").css("display", "block");
+                    $("#emp_account_error").css("color", "red");
+                    $("#emp_account_error").html("此账号已存在！");
+                    $("#emp_account").attr("class","input-text error");
+                    $("#empAddSubmit").attr("class", "btn disabled btn-primary radius");
+                }else {
+                    $("#emp_account_error").css("display", "block");
+                    $("#emp_account_error").css("color", "green");
+                    $("#emp_account_error").html("此账号可用！");
+                    $("#emp_account").attr("class","input-text");
+                    $("#empAddSubmit").attr("class", "btn btn-primary radius");
+                }
+            },"json");
+        }
+
+        //正在编写
+        $("#emp_account").bind('input propertychange', function() {
+            var emp_account = $(this).val();
+            checkAccount(emp_account);
+        });
+
+        //失去焦点
+        $("#emp_account").blur(function() {
+            var emp_account = $("#emp_account").val();
+            checkAccount(emp_account);
+        });
+
+        $("#form_member").validate({
+            rules:{
+                emp_account:{
+                    minlength:5,
+                    maxlength:18,
+                    required:true,
+//                    checkAccount:true,
+                },
+                emp_pwd:{
+                    minlength:5,
+                    maxlength:18,
+                    required:true,
+                },
+                emp_pwd_re:{
+                    minlength:5,
+                    maxlength:18,
+                    required:true,
+                    equalTo: "#emp_pwd",
+                },
+                emp_name:{
+                    required:true,
+                },
+                emp_birth:{
+                    required:true,
+                    date:true,
+                },
+                emp_phone:{
+                    required:true,
+                },
+                emp_email:{
+                    required:true,
+                    email:true,
+                },
+                emp_in_date:{
+                    required:true,
+                    date:true,
+                },
+                emp_dept_id:{
+                    required:true,
+                },
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var formData = $(form).serializeArray();
+                $.post("/staffing/employee/insertOrUpdate.do",formData,function(data){
+                    if(data === true){
+                        layer.alert("操作成功！",function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('.btn-refresh').click();
+                            parent.layer.close(index);
+                        })
+                    }else {
+                        layer.msg('操作失败!',{icon:1,time:1000});
+                    }
+                },"json");
+            }
+        });
+    });
+
+    //初始化方法
+    function init(){
+        //加载部门
+        $.post("/staffing/department/getDepartmentList.do" , function(data) {
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.dept_id+">"+v.dept_name+"</option>";
+                $("#emp_dept_id").append(content);
+            });
+        },"json");
+    }
+
+    //获取请求参数，name: 请求中参数的名字，返回参数的值
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    //填充数据
+    function updateInfo() {
+        var id = getQueryString("id");
+        if(id != null){
+            $.post("/staffing/employee/getEmployeeById.do",{"empId":id},function(data){
+                if(data != null){
+                    $("div[name=remove_div]").remove();
+                    $("#emp_id").val(data.emp_id);
+                    $("#emp_account").val(data.emp_account);
+                    $("#emp_account").attr("disabled",true);
+                    $("#emp_account").attr("readOnly",true);
+                    $("input[value="+data.emp_sex+"]").attr("checked",true);
+                    $("#emp_name").val(data.emp_name);
+                    $("#emp_birth").val(getDateTimeStr(data.emp_birth));
+                    $("#emp_phone").val(data.emp_phone);
+                    $("#emp_email").val(data.emp_email);
+                    $("#emp_in_date").val(getDateTimeStr(data.emp_in_date));
+                    $("#emp_dept_id > option[value="+data.emp_dept_id+"]").attr("selected", true);
+                    $("#emp_desc").val(data.emp_desc);
+                }
+            },"json");
+        }
+    }
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

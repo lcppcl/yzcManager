@@ -1,0 +1,172 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>修改猪舍</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form_grade_update">
+		<input id="gra_id" name="gra_id" type="hidden">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>舍名：</label>
+			<div class="formControls col-xs-8 col-sm-9" id="ear_div">
+				<input type="text" class="input-text" value="" placeholder="" id="gra_name" name="gra_name">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>建造日期：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,readOnly:true})" id="gra_build_time" name="gra_build_time" class="input-text Wdate" style="width:120px;">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">管理员(舍长)：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<select class="select" size="1" name="gra_admin" id="gra_admin">
+						<option value="">选择管理员(舍长)</option>
+					</select>
+				</span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="gra_desc" id="gra_desc" cols="" rows="" class="textarea"  placeholder="说点什么..." ></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length"/></p>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../MyJs/date_string.js"></script>
+
+<!--/_footer /作为公共模版分离出去--> 
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+$(function(){
+	$(window).load(function(){
+		init();
+        updateInfo();
+    });
+
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+
+    $("#form_grade_update").validate({
+        rules:{
+            gra_name:{
+                required:true,
+            },
+            gra_build_time:{
+                required:true,
+            },
+            gra_admin:{
+                required:true,
+            },
+
+        },
+        onkeyup:false,
+        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
+            var formData = $(form).serializeArray();
+            $.post("/pig_manage/grade/insertOrUpdate.do",formData,function(data){
+                if(data === true){
+                    layer.alert("修改成功！",function () {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.$('.btn-refresh').click();
+                        parent.layer.close(index);
+                    })
+                }else {
+                    layer.msg('修改失败!',{icon:1,time:1000});
+                }
+            },"json");
+        }
+    });
+});
+
+
+//获取请求参数，name: 请求中参数的名字，返回参数的值
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+//初始化方法
+function init(){
+    //加载员工
+    $.post("/staffing/employee/getEmployeeList.do", {deptId:2} , function(data) {
+        $(data).each(function(i,v) {
+            var content = "<option value="+v.emp_id+">"+v.emp_name+"</option>";
+            $("#gra_admin").append(content);
+        });
+    },"json");
+}
+//填充数据
+function updateInfo() {
+    var gra_id = getQueryString("id");
+    $.post("/pig_manage/grade/getGradeInfo.do",{"gra_id":gra_id},function(data){
+        $("#gra_id").val(data.gra_id);
+        $("#gra_name").val(data.gra_name);
+        $("#gra_build_time").val(data.gra_build_time);
+        $("#gra_desc").val(data.gra_desc);
+        $("#gra_admin > option[value="+data.emp_id+"]").attr("selected", true);
+    },"json");
+}
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

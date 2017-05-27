@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcEmployeeMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcEmployee">
+		<id column="emp_id" property="emp_id" />
+		<result column="emp_account" property="emp_account" />
+		<result column="emp_pwd" property="emp_pwd" />
+		<result column="emp_name" property="emp_name" />
+		<result column="emp_sex" property="emp_sex" />
+		<result column="emp_birth" property="emp_birth" />
+		<result column="emp_phone" property="emp_phone" />
+		<result column="emp_email" property="emp_email" />
+		<result column="emp_in_date" property="emp_in_date" />
+		<result column="emp_desc" property="emp_desc" />
+		<result column="emp_dept_id" property="emp_dept_id" />
+		<result column="emp_manager" property="emp_manager" />
+		<result column="emp_state" property="emp_state" />
+	</resultMap>
+
+</mapper>

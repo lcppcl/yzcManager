@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcMedicineRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcMedicineRecord">
+		<id column="med_rec_id" property="med_rec_id" />
+		<result column="med_rec_time" property="med_rec_time" />
+		<result column="med_rec_count" property="med_rec_count" />
+		<result column="med_rec_mec_id" property="med_rec_mec_id" />
+		<result column="med_rec_fee_id" property="med_rec_fee_id" />
+		<result column="med_rec_ill_id" property="med_rec_ill_id" />
+		<result column="med_rec_money" property="med_rec_money" />
+	</resultMap>
+
+</mapper>

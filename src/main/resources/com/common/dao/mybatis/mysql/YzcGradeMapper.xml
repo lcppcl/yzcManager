@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcGradeMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcGrade">
+		<id column="gra_id" property="gra_id" />
+		<result column="gra_name" property="gra_name" />
+		<result column="gra_class_num" property="gra_class_num" />
+		<result column="gra_desc" property="gra_desc" />
+		<result column="gra_admin" property="gra_admin" />
+		<result column="gra_build_time" property="gra_build_time" />
+	</resultMap>
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.yewumanage.DealPigDao">
+
+    <select id="getDealPigList" resultType="map">
+        SELECT dp.*,p.pig_ear_num,o.order_date,pa.par_name,e.emp_name
+        FROM yzc_deal_pig dp
+        LEFT JOIN yzc_pig p ON p.pig_id = dp.deal_ear
+        LEFT JOIN yzc_orders o ON o.uuid = dp.order_uuid
+        LEFT JOIN yzc_partner pa ON o.order_sup = pa.par_id
+        LEFT JOIN yzc_employee e ON o.order_emp = e.emp_id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                AND dp.deal_time &gt; #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND dp.deal_time &lt; #{endDate}
+            </if>
+            <if test="deal_type != null and deal_type != ''">
+                AND dp.deal_buy_sell = #{deal_type}
+            </if>
+            <if test="ear_num != null and ear_num != ''">
+                AND p.pig_ear_num LIKE CONCAT('%',#{ear_num},'%')
+            </if>
+            <if test="par_name != null and par_name != ''">
+                AND pa.par_name LIKE CONCAT('%',#{par_name},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="geDealPigById" resultType="map">
+        SELECT dp.*,p.pig_ear_num,o.order_date,pa.par_name,e.emp_name
+        FROM yzc_deal_pig dp
+        LEFT JOIN yzc_pig p ON p.pig_id = dp.deal_ear
+        LEFT JOIN yzc_orders o ON o.uuid = dp.order_uuid
+        LEFT JOIN yzc_partner pa ON o.order_sup = pa.par_id
+        LEFT JOIN yzc_employee e ON o.order_emp = e.emp_id
+        WHERE dp.deal_id = #{deal_id}
+    </select>
+
+</mapper>

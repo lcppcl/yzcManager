@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcIllRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcIllRecord">
+		<id column="ill_id" property="ill_id" />
+		<result column="ill_name" property="ill_name" />
+		<result column="ill_ear" property="ill_ear" />
+		<result column="ill_time" property="ill_time" />
+		<result column="ill_med_list" property="ill_med_list" />
+		<result column="ill_doctor" property="ill_doctor" />
+		<result column="ill_desc" property="ill_desc" />
+	</resultMap>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.product_table.ProductTableDao">
+
+    <select id="boarPigProductQuery" resultType="map">
+        SELECT DISTINCT p.pig_id,p.pig_ear_num,g.gra_name,c.cla_name,COUNT(b.bre_id) AS btime
+        FROM yzc_breed_record b
+        JOIN yzc_pig p ON p.pig_id = b.bre_fa_ear
+        JOIN yzc_class c ON p.pig_class = c.id
+        JOIN yzc_grade g ON c.cla_gra_id = g.gra_id
+        WHERE p.pig_sex = '公猪'
+        <if test="ear_num != null and ear_num != ''">
+            AND p.pig_ear_num = #{ear_num}
+        </if>
+        <if test="grade_id != 0 ">
+            AND g.gra_id = #{grade_id}
+        </if>
+        <if test="class_id != 0 ">
+            AND c.id = #{class_id}
+        </if>
+        GROUP BY p.pig_id
+    </select>
+
+    <select id="sowPigProductQuery" resultType="map">
+        SELECT DISTINCT p.pig_id,p.pig_ear_num,g.gra_name,c.cla_name,COUNT(b.bre_id) AS btime,COUNT(t.pre_id) AS ptime,
+        CONCAT(CAST((COALESCE(ROUND((COUNT(t.pre_id) / COUNT(b.bre_id)),2),0) * 100) AS CHAR CHARSET utf8),'%') AS crate,
+        SUM(n.bor_count) AS scount,
+        CONCAT(CAST((COALESCE(ROUND((SUM(n.bor_live_count) / SUM(n.bor_count)),2),0) * 100) AS CHAR CHARSET utf8),'%') AS lrate
+        FROM yzc_breed_record b
+        JOIN yzc_pig p ON p.pig_id = b.bre_mo_ear
+        JOIN yzc_class c ON p.pig_class = c.id
+        JOIN yzc_grade g ON c.cla_gra_id = g.gra_id
+        JOIN yzc_pregnant_record t ON b.bre_id = t.pre_bre_id
+        JOIN yzc_born_record n ON n.bor_pre_id = t.pre_id
+        WHERE p.pig_sex = '母猪'
+        <if test="ear_num != null and ear_num != ''">
+            AND p.pig_ear_num = #{ear_num}
+        </if>
+        <if test="grade_id != 0 ">
+            AND g.gra_id = #{grade_id}
+        </if>
+        <if test="class_id != 0 ">
+            AND c.id = #{class_id}
+        </if>
+        GROUP BY p.pig_id
+    </select>
+
+    <select id="getClassDetail" resultType="map">
+        SELECT p.pig_ear_num,p.pig_dn_weight,c.cla_name,g.gra_name
+        FROM yzc_pig p
+        LEFT JOIN yzc_class c ON p.pig_class = c.id
+        LEFT JOIN yzc_grade g ON c.cla_gra_id = g.gra_id
+        <where>
+            <if test="ear_num != null and ear_num != ''">
+                AND p.pig_ear_num = #{ear_num}
+            </if>
+            <if test="grade_id != 0 ">
+                AND g.gra_id = #{grade_id}
+            </if>
+            <if test="class_id != 0 ">
+                AND c.id = #{class_id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getPigFeedsCost" resultType="map">
+        SELECT g.gra_id,g.gra_name,COUNT(c.id) AS classes,COUNT(p.pig_id) AS pig_count,
+        IFNULL(SUM((m.med_rec_count * m.med_rec_money)),0) AS mcost,
+        IFNULL(SUM(r.rep_spend),0) AS other,IFNULL(SUM((fs.fes_price * f.fee_count)),0) AS fcost
+        FROM yzc_grade g
+        LEFT JOIN yzc_class c  ON g.gra_id = c.cla_gra_id
+        LEFT JOIN yzc_pig p  ON p.pig_class = c.id
+        LEFT JOIN yzc_ill_record i ON i.ill_ear = p.pig_id
+        LEFT JOIN yzc_medicine_record m  ON i.ill_id = m.med_rec_mec_id
+        LEFT JOIN yzc_repair_record r ON r.rep_cla_id = c.id
+        LEFT JOIN yzc_feed_record f ON f.fee_class = c.id
+        LEFT JOIN yzc_feeds fs ON f.fee_fes_id = fs.fes_id
+        <where>
+            <if test="grade_id != 0 ">
+                AND g.gra_id = #{grade_id}
+            </if>
+        </where>
+        GROUP BY g.gra_id
+    </select>
+
+</mapper>

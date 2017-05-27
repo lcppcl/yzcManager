@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcDepartmentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcDepartment">
+		<id column="dept_id" property="dept_id" />
+		<result column="dept_name" property="dept_name" />
+		<result column="dept_desc" property="dept_desc" />
+		<result column="dept_pare_id" property="dept_pare_id" />
+		<result column="dept_state" property="dept_state" />
+	</resultMap>
+
+</mapper>

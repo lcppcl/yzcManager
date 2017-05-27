@@ -1,0 +1,373 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<LINK rel="Bookmark" href="/favicon.ico" >
+	<LINK rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+	<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>添加育种猪</title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>耳号：</label>
+			<div class="formControls col-xs-8 col-sm-10" id="ear_div">
+				<input type="text" class="input-text" value="" placeholder="" id="pig_ear_num" name="pig_ear_num">
+				<label id="ear_num_error" for="pig_ear_num" class="error" style="display: none;"></label>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>公母：</label>
+			<div class="formControls col-xs-8 col-sm-10 skin-minimal">
+				<div class="radio-box">
+					<input name="pig_sex" value="公猪" type="radio" id="sex-1" checked>
+					<label for="sex-1">公猪</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="母猪" id="sex-2" name="pig_sex">
+					<label for="sex-2">母猪</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">猪栏：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<span class="select-box">
+					<select class="select" size="1" name="pig_class" id="pig_class">
+						<option value="">请选择猪栏</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">父耳号：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<span class="select-box">
+					<select class="select" size="1" name="pig_fa_ear" id="pig_fa_ear">
+						<option value="">请选择父耳号</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">母耳号：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<span class="select-box">
+					<select class="select" size="1" name="pig_mo_ear" id="pig_mo_ear">
+						<option value="">请选择母耳号</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>来源：</label>
+			<div class="formControls col-xs-8 col-sm-10 skin-minimal">
+				<div class="radio-box">
+					<input value="自繁" type="radio" id="source_1" name="pig_source"  checked>
+					<label for="source_1">自繁</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="购入" id="source_2" name="pig_source">
+					<label for="source_2">购入</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出生日期：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<input type="text" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" id="pig_birth" name="pig_birth" class="input-text Wdate" style="width:120px;">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>当前重量：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<input type="text" class="input-text" placeholder="斤" name="pig_weight" id="pig_weight">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>断奶重量：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<input type="text" class="input-text" placeholder="斤" name="pig_dn_weight" id="pig_dn_weight">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>进场时间：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<input type="text" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" id="pig_enter_time" name="pig_enter_time" class="input-text Wdate" style="width:120px;">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>星级评定：</label>
+			<div class="formControls col-xs-8 col-sm-10 skin-minimal">
+				<div class="radio-box">
+					<input value="1" type="radio" id="level-1" name="pig_level" checked>
+					<label for="level-1">一星</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="2" id="level_2" name="pig_level">
+					<label for="level_2">二星</label>
+				</div>
+				<div class="radio-box">
+					<input value="3" type="radio" id="level_3" name="pig_level">
+					<label for="level_3">三星</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="4" id="level_4" name="pig_level">
+					<label for="level_4">四星</label>
+				</div>
+				<div class="radio-box">
+					<input value="5" type="radio" id="level_5" name="pig_level">
+					<label for="level_5">五星</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>左奶头数：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<input type="text" class="input-text" placeholder="个" name="pig_letf_nipples" id="pig_letf_nipples">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>右奶头数：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<input type="text" class="input-text" placeholder="个" name="pig_right_nipples" id="pig_right_nipples">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否阉割：</label>
+			<div class="formControls col-xs-8 col-sm-10 skin-minimal">
+				<div class="radio-box">
+					<input value="1" type="radio" id="is_spay_1" name="pig_is_spay" checked>
+					<label for="is_spay_1">是</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="0" id="is_spay_2" name="pig_is_spay">
+					<label for="is_spay_2">否</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>健康状态：</label>
+			<div class="formControls col-xs-8 col-sm-10 skin-minimal">
+				<div class="radio-box">
+					<input value="健康" type="radio" id="health_1" name="pig_health" checked>
+					<label for="health_1">健康</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="亚健康" id="health_2" name="pig_health">
+					<label for="health_2">亚健康</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="生病" id="health_3" name="pig_health">
+					<label for="health_3">生病</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">品种：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<span class="select-box">
+					<select class="select" size="1" name="pig_type_id" id="pig_type_id">
+						<option value="">请选择品种</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">阶段：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<span class="select-box">
+					<select class="select" size="1" name="pig_step_id" id="pig_step_id">
+						<option value="1">育种猪（后备猪）</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">备注：</label>
+			<div class="formControls col-xs-8 col-sm-10">
+				<textarea id="pig_desc" name="pig_desc" cols="" rows="" class="textarea"  placeholder="说点什么..." ></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length"></em></p>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-10 col-xs-offset-4 col-sm-offset-3">
+				<input id="pigAddSubmit" class="btn disabled btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $(function(){
+        $(window).load(function(){
+            init();
+        });
+        //检测耳号
+        function checkEarNum(ear_num) {
+            $.post("/pig_manage/pig/validateEar.do",{"ear_num":ear_num},function(data){
+                if(data === false){
+                    $("#ear_num_error").css("display", "block");
+                    $("#ear_num_error").css("color", "red");
+                    $("#ear_num_error").html("此耳号已存在！");
+                    $("#pig_ear_num").attr("class","input-text error");
+                    $("#pigAddSubmit").attr("class", "btn disabled btn-primary radius");
+                }else {
+                    $("#ear_num_error").css("display", "block");
+                    $("#ear_num_error").css("color", "green");
+                    $("#ear_num_error").html("此耳号可用！");
+                    $("#pig_ear_num").attr("class","input-text");
+                    $("#pigAddSubmit").attr("class", "btn btn-primary radius");
+                }
+            },"json");
+        }
+
+        //正在编写
+        $("#pig_ear_num").bind('input propertychange', function() {
+            var ear_num = $(this).val();
+            checkEarNum(ear_num);
+        });
+
+        //失去焦点
+        $("#pig_ear_num").blur(function() {
+            var ear_num = $("#pig_ear_num").val();
+            checkEarNum(ear_num);
+        });
+
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-member-add").validate({
+            rules:{
+                pig_ear_num:{
+                    required:true,
+                    minlength:2,
+                    maxlength:16
+                },
+                pig_sex:{
+                    required:true,
+                },
+                pig_birth:{
+                    required:true,
+                },
+                pig_weight:{
+                    required:true,
+                },
+                pig_dn_weight:{
+                    required:true,
+                },
+                pig_enter_time:{
+                    required:true,
+                },
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var pig = $(form).serializeArray();
+                $.post("/pig_manage/pig/addOrUpdate.do",pig,function(data){
+                    if(data === true){
+                        layer.alert("新增成功！",function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.$('.btn-refresh').click();
+                            parent.layer.close(index);
+                        })
+                    }else {
+                        layer.msg('新增失败!',{icon:1,time:1000});
+                    }
+                },"json");
+            }
+        });
+    });
+
+    //初始化方法
+    function init(){
+
+        //加载猪栏
+        $.post("/pig_manage/pig/getClassesList.do",function(data){
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.id+">"+v.cla_name+"</option>";
+                $("#pig_class").append(content);
+            });
+        },"json");
+
+        //加载母耳号
+        $.post("/pig_manage/pig/getPigList.do", {"pig_sex":"母猪"}, function(data) {
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.pig_id+">"+v.pig_ear_num+"</option>";
+                $("#pig_mo_ear").append(content);
+            });
+        },"json");
+
+        //加载父耳号
+        $.post("/pig_manage/pig/getPigList.do", {"pig_sex":"公猪"}, function(data) {
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.pig_id+">"+v.pig_ear_num+"</option>";
+                $("#pig_fa_ear").append(content);
+            });
+        },"json");
+
+        //加载品种
+        $.post("/pig_manage/pig/getVarietyList.do",function(data){
+            $(data).each(function(i,v) {
+                var content = "<option value="+v.var_id+">"+v.var_name+"</option>";
+                $("#pig_type_id").append(content);
+            });
+        },"json");
+
+//        //加载阶段
+//        $.post("/pig_manage/pig/getStepList.do",function(data){
+//            $(data).each(function(i,v) {
+//                var content = "<option value="+v.id+">"+v.step_name+"</option>";
+//                $("#pig_step_id").append(content);
+//            });
+//        },"json");
+
+    }
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcPregnantRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcPregnantRecord">
+		<id column="pre_id" property="pre_id" />
+		<result column="pre_found_pre" property="pre_found_pre" />
+		<result column="pre_bre_id" property="pre_bre_id" />
+	</resultMap>
+
+</mapper>

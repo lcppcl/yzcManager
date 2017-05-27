@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzc.dao.pig_manage.ClassesDao">
+
+    <select id="getClassesList" resultType="map">
+        SELECT son.*
+        FROM (
+            SELECT c.id,c.cla_eara,g.gra_id,g.gra_name,COUNT(p.pig_id) pcount,c.cla_name,c.cla_is_intact,e.emp_id,e.emp_name,c.cla_desc
+            FROM yzc_class c
+            LEFT JOIN yzc_grade g ON c.cla_gra_id=g.gra_id
+            LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+            LEFT JOIN yzc_pig p ON c.id = p.pig_class
+            GROUP BY c.id
+        ) son
+        <where>
+            <if test="m_name != null and m_name != ''">
+                AND son.emp_name LIKE CONCAT('%',#{m_name},'%')
+            </if>
+            <if test="cla_name != null and cla_name != ''">
+                AND son.cla_name LIKE CONCAT('%',#{cla_name},'%')
+            </if>
+            <if test="gra_id != null and gra_id != 0">
+                AND son.gra_id = #{gra_id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getClassInfo" resultType="map">
+        SELECT c.id,c.cla_eara,g.gra_id,g.gra_name,COUNT(p.pig_id) pcount,c.cla_name,c.cla_is_intact,e.emp_id,e.emp_name,c.cla_desc
+        FROM yzc_class c
+        LEFT JOIN yzc_grade g ON c.cla_gra_id=g.gra_id
+        LEFT JOIN yzc_employee e ON e.emp_id=c.cla_breeder
+        LEFT JOIN yzc_pig p ON c.id = p.pig_class
+        <where>
+            <if test="id != 0">
+                AND c.id = #{id}
+            </if>
+            <if test="c_name != null and c_name != ''">
+                AND c.cla_name LIKE CONCAT('%',#{c_name},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.dao.YzcPartnerMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.common.entity.YzcPartner">
+		<id column="par_id" property="par_id" />
+		<result column="par_name" property="par_name" />
+		<result column="par_address" property="par_address" />
+		<result column="par_phone" property="par_phone" />
+		<result column="par_email" property="par_email" />
+		<result column="par_type" property="par_type" />
+		<result column="par_state" property="par_state" />
+	</resultMap>
+
+</mapper>
